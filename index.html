@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+        
+<html lang="en">
+<head>
+  <title>Encrypted notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="example.css"/>
+  <link rel="stylesheet" type="text/css" href="dist/slidebars.min.css"/>
+  <script type="text/javascript" src="sjcl.js"></script>
+  <script type="text/javascript" src="form.js"></script>
+  <script type="text/javascript" src="example.js"></script>
+ 
+ <script type="text/javascript" src="js/crypto/jquery-3.0.0.min.js"></script>
+    <!--[if lt IE 9]><script type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <!--[if le IE 9]><script type="text/javascript"  src="//github.com/davidchambers/Base64.js/blob/master/base64.js"></script><![endif]-->
+    <script type="text/javascript" src="js/crypto/aes.js"></script>
+	<script type="text/javascript" src="js/crypto/aes-ctr.js"></script>
+
+
+	
+</head>
+
+<body onload="loaded()">
+
+
+  <form id="theForm" onsubmit="return false;">
+    <!-- mode controls -->
+ <div off-canvas="id-1 left overlay">
+   <span class="button" id="close-id-1">
+<span class="text">Close</span>
+</span>
+<div class="after-button"></div>
+  <div class="column" id="cmode">
+	<div class="box" id="pkey">
+	  <h2>Key Derivation</h2>
+	  <div class="section">
+		<div>
+		  <label for="salt">Salt:</label>
+		  <a class="random floatright" href="javascript:randomize('salt',2,0)">random</a>
+		</div>
+		<input type="text" id="salt" class="wide hex" autocomplete="off" size="17" maxlength="35"/>
+		<input type="checkbox" name="freshsalt" id="freshsalt" autocomplete="off" checked="checked" style="display:none;"/>
+		<label for="freshsalt" style="display:none;">Use fresh random salt for each new password</label>
+		<p class="explanation">
+		  Salt adds more variability to your key, and prevents attackers
+		  from using <a href="http://en.wikipedia.org/wiki/Rainbow_table">rainbow tables</a> to attack it.
+		</p>     
+	  </div>
+	  <div class="section">
+		<label for="iter">Strengthen by a factor of:</label>
+		<input type="text" name="iter" id="iter" value="1000" class="numeric" size="5" maxlength="5" autocomplete="off"/>
+		<p class="explanation">
+		  Strengthening makes it slower to compute the key corresponding to your
+		  password.  This makes it take much longer for an attacker to guess it.
+		</p>
+	  </div>
+	  <div class="section">
+		Key size:
+		<input type="radio" name="keysize" value="128" id="key128" autocomplete="off" onclick="extendKey(4)"/>
+		<label for="key128">128</label>
+		<input type="radio" name="keysize" value="192" id="key192" autocomplete="off" onclick="extendKey(6)"/>
+		<label for="key192">192</label>
+		<input type="radio" name="keysize" value="256" id="key256" checked="checked" autocomplete="off" onclick="extendKey(8)"/>
+		<label for="key256">256</label>
+		<p class="explanation">
+		  128 bits should be secure enough, but you can generate a longer
+		  key if you wish.
+		</p>
+	  </div>
+	  <!-- cipher key -->
+	  <div class="section" style="display:none;">
+		<div>
+		  <label for="key">Key:</label>
+		  <!--
+		  <a class="random floatright" href="javascript:randomizeKey()">random</a>
+		  -->
+		</div>
+		<textarea class="hex noselect" readonly="readonly" unselectable="on" id="key" name="key" rows="2" autocomplete="off"></textarea>
+		<p class="explanation">
+		  This key is computed from your password, salt and strengthening factor.  It
+		  will be used internally by the cipher.
+		</p>
+	  </div>
+	</div>
+  
+	<div class="box">
+	  <h2>Cipher Parameters</h2>
+	  <div class="section">
+		Cipher mode:
+		<input type="radio" name="mode" value="ccm" id="ccm" autocomplete="off"/>
+		<label for="ccm"><acronym title="Counter mode with Cipher block chaining Message authentication code">CCM</acronym></label>
+		<input type="radio" name="mode" value="ocb2" id="ocb2" checked="checked" autocomplete="off"/>
+		<label for="ocb2"><acronym title="Offset CodeBook mode, version 2.0">OCB2</acronym></label>
+		<input type="radio" name="mode" value="gcm" id="gcm" autocomplete="off"/>
+		<label for="gcm"><acronym title="Galois Counter Mode">GCM</acronym></label>
+		<p class="explanation">
+		  <a href="http://en.wikipedia.org/wiki/OCB_mode">OCB2 mode</a> (patented) and
+		  <a href="http://en.wikipedia.org/wiki/GCM_mode">GCM mode</a> (unencumbered)
+		  are slightly faster and have more features than
+		  <a href="http://en.wikipedia.org/wiki/CCM_mode">CCM mode</a>.
+		</p>
+	  </div>
+	  
+	  <div class="section">
+		<div>
+		  <label for="iv">Initialization vector:</label>
+		  <a class="random floatright" href="javascript:randomize('iv',4,0)">random</a>
+		</div>
+		<input type="text" name="iv" id="iv" class="wide hex" size="32" maxlength="35" autocomplete="off"/>
+		<input type="checkbox" id="freshiv" autocomplete="off" checked="checked"  style="display:none;"/>
+		<label for="freshiv"  style="display:none;">Choose a new random IV for every message.</label>
+		<p class="explanation">
+		  The IV adds randomness to your message each time you send it.
+		</p>
+	  </div>
+	  
+	  <div class="section">
+		Authentication strength:
+		<input type="radio" name="tag" value="64" id="tag64" autocomplete="off" checked="checked"/>
+		<label for="tag64">64</label>
+		<input type="radio" name="tag" value="96" id="tag96" autocomplete="off"/>
+		<label for="tag96">96</label>
+		<input type="radio" name="tag" value="128" id="tag128" checked="checked" autocomplete="off"/>
+		<label for="tag128">128</label>
+		<p class="explanation">
+The longer the authentication tag, the harder it is
+		  for somebody to change your encrypted message.
+		</p>
+	  </div>
+	  
+	  <div class="section" style="display:none;">
+		<input type="checkbox" name="json" id="json" autocomplete="off" checked="checked"/>
+		<label for="json">Send the parameters and authenticated data along
+		  with the message.</label>
+		 <p class="explanation">
+		   These parameters are required to decrypt your message later.
+		 </p>
+	  </div>
+	</div>
+  </div>
+ </div>
+  <div class="column" id="ctexts">
+<div id="status">
+</div>
+  <span class="button" id="open-id-1">
+<span class="text">Settings</span>
+</span>
+<div class="after-button"></div>
+      <!-- Password and pbkdf2 parameters -->
+    <div class="box" id="ppassword">
+      <h2>Password</h2>
+      <div class="section">
+        <label for="password">Password:</label>
+        <input type="password" class="wide" name="password" id="password" autocomplete="off" tabindex="1"/>
+        <p class="explanation">
+          Choose a strong, random password.
+        </p>
+      </div>
+    </div>
+    <div id="pplaintext" class="box">
+      <h2>Plaintext</h2>
+      <div class="section">
+        <label for="plaintext">Secret message:</label>
+        <textarea id="plaintext" autocomplete="off" rows="5" tabindex="2"></textarea>
+        <div class="explanation">
+          This message will be encrypted, so that nobody can read it or change it
+          without your password.
+        </div>
+      </div>  
+   
+      <div class="section">
+        <label for="adata">Authenticated data:</label>
+        <textarea id="adata" autocomplete="off" tabindex="3" rows="1" ></textarea>
+        <div class="explanation">
+          This auxilliary message isn't secret, but its integrity will be checked
+          along with the integrity of the message.
+        </div>
+      </div>
+    </div>
+    
+    <div id="buttons">
+      <a href="#" onclick="EncryptIt()" id="encrypt" tabindex="4"><span class="turnDown">encrypt</span></a>
+      <a href="#" onclick="DecryptIt()" id="decrypt" tabindex="6"><span class="turnUp">decrypt</span></a>
+    </div>
+    
+	<div id="pciphertext" class="box">
+      <h2>Encrypt it - Decrypt it</h2>
+		<textarea name="aescipher" class="width-full" id="aescipher" autocomplete="off" rows="5" tabindex="7"></textarea>
+      <div class="explanation">
+        Your message, encrypted so that nobody can read it
+        or change it without your password.
+      </div>
+    </div>
+	
+    <div class="box" style="display:none;">
+      <h2>Ciphertext</h2>
+      <label for="ciphertext">Ciphertext:</label>
+      <textarea class="noselect" readonly="readonly" unselectable="on" id="ciphertext" autocomplete="off" rows="5" tabindex="10"></textarea>
+      <div class="explanation">
+        Intermediate encryption
+      </div>
+    </div>
+	
+			
+  </form>
+	<script type="text/javascript" src="dist/slidebars.min.js"></script>
+    <script>
+	'use strict';
+	function EncryptIt() {
+		doEncrypt();
+		aesencrypt();
+	}
+	
+	function DecryptIt() {
+		aesdecrypt();
+		doDecrypt();
+	}
+	function aesencrypt() {
+                var ciphertext = Aes.Ctr.encrypt($('#ciphertext').val(), $('#password').val(), 256);
+                $('#aescipher').val(ciphertext);
+            }
+	function aesdecrypt() {
+                var plain = Aes.Ctr.decrypt($('#aescipher').val(), $('#password').val(), 256);
+                $('#ciphertext').val(plain);
+            }
+    </script>
+ <script>
+      ( function ( $ ) {
+        // Initialize Slidebars
+        var controller = new slidebars();
+        controller.init();
+		
+		// Toggle Slidebars
+$( '#open-id-1' ).on( 'click', function ( event ) {
+  // Stop default action and bubbling
+  event.stopPropagation();
+  event.preventDefault();
+
+  // Open the Slidebar with id 'id-1'
+  controller.open( 'id-1' );
+} );
+$( '#close-id-1' ).on( 'click', function ( event ) {
+  // Stop default action and bubbling
+  event.stopPropagation();
+  event.preventDefault();
+
+  // Close the Slidebar with id 'id-1'
+  controller.close( 'id-1' );
+} );
+		
+      } ) ( jQuery );
+    </script>
+	
+</body>
+</html>
