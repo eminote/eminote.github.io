@@ -3,17 +3,22 @@
   padding: 0px;
   font-family: Arial, Helvetica, FreeSans, sans;
 }
-h1 {
-  text-align: center;
-  background: #eee;
-  padding: 5px;
-  margin-bottom: 0.6em;
-  font-size: 1.5em;
+.header img {
+    float: left;
+    width: 30px;
+    height: 30px;
+    padding-left: 5px;
 }
-.header {
-  width: 650px;
-  margin: 0px auto 1em;
+
+.header h1 {
+    position: relative;
+    left: 8px;
+    float: left;
+    top: 5px;
+    text-align: center;
+    font-size: 1.3em;
 }
+
 p+p {
   margin-top: 1em;
 }
@@ -55,7 +60,7 @@ textarea+*, .wide+* {
 .box {
   border: 2px solid #999;
   padding: 7px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
   border-radius: 7px;
@@ -85,48 +90,57 @@ h2 {
 #ppassword h2 { background: #4a4; }
 #pciphertext { border-color: #78f; }
 #pciphertext h2 { background: #78f; }
-#buttons { text-align: center; margin-top: -20px; }
+#buttons { text-align: center; margin-top: -10px; }
 a#doPbkdf2, a#encrypt, a#decrypt {
-  display: inline-block;
-  text-align: center;
-  height: 43px;
-  padding-top: 20px;
-  width: 50px;
-  background: url('alpha-arrow.png') no-repeat bottom center;
-  vertical-align: middle;
-  border: none;
-  color: white;
-  overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    height: 77px;
+    width: 70px;
+    background: url('img/alpha-arrow.png') no-repeat bottom center;
+    vertical-align: middle;
+    border: none;
+    color: white;
+    overflow: hidden;
+    background-size: 200%;
 }
 .turnDown {
-  display: inline-block;
-  padding-bottom: 3px;
-  -moz-transform: rotate(90deg);	
-  -webkit-transform: rotate(90deg);	
-  transform: rotate(90deg);
-  background-color: inherit;
+	display: inline-block;
+	padding-bottom: 3px;
+	-moz-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+	background-color: inherit;
+	font-size: 1.1em;
+	padding-left: 15px;
 }
 .turnUp {
-  display: inline-block;
-  padding-bottom: 3px;
-  -moz-transform: rotate(-90deg);	
-  -webkit-transform: rotate(-90deg);	
-  transform: rotate(-90deg);
-  background-color: inherit;	
+	display: inline-block;
+	padding-bottom: 6px;
+	-moz-transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+	background-color: inherit;
+	font-size: 1.1em;
 }
 .buttons a.disabled {
   background-color: #ccc ! important;
   cursor: inherit ! important;
 }
-a#encrypt { background-color: #f65; margin-bottom: 2px; }
+a#encrypt {
+	background-color: #f65;
+	margin-bottom: 2px;
+	padding-top: 20px;
+	background-size: 200%;
+}
 a#encrypt:hover, a#encrypt:focus { background-color: #f76; }
 a#encrypt:active { background-color: #f87; }
 a#decrypt {
-  height: 36px;
-  padding-top: 27px;
-  background: url('alpha-arrow.png') no-repeat top center;
-  background-color: #78f;
-  margin-top: 2px;
+	height: 50px;
+	padding-top: 47px;
+	background: url('img/alpha-arrow.png') no-repeat top center;
+	background-color: #78f;
+	margin-top: 2px;
+	background-size: 200%;
 }
 a#decrypt:hover { background-color: #89f; }
 a#decrypt:focus { background-color: #89f; }
@@ -163,6 +177,33 @@ input[type="radio"], input[type="checkbox"] {
 .noselect:focus {
    outline: none;
 }
+.toggle {
+	border: none;
+    cursor: pointer;
+    position: relative;
+    -webkit-transition: all 300ms ease;
+    transition: all 300ms ease;
+    margin-bottom: 5px;
+    background-color: transparent;
+	float:right;
+	right: 4px;
+	width: 30px;
+	height: 30px;
+}
+.toggle img {
+	width: 30px;
+	height: 30px;
+	-moz-transform:rotate(45deg);
+    -webkit-transform:rotate(45deg);
+    -o-transform:rotate(45deg);
+    -ms-transform:rotate(45deg);
+    transform:rotate(45deg);
+}
+
+.mylang img {
+	width: 40px;
+	height: 40px;
+}
 .button {
     border-radius: 4px;
     cursor: pointer;
@@ -188,4 +229,7 @@ input[type="radio"], input[type="checkbox"] {
 }
 [off-canvas] {
     background-color: rgba(255, 255, 255, 1);
+}
+textarea {
+    resize: none;
 }

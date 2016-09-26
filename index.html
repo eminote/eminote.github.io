@@ -1,255 +1,333 @@
-<!DOCTYPE html>
-        
+<!DOCTYPE html>   
 <html lang="en">
-<head>
-  <title>Encrypted notes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" type="text/css" href="example.css"/>
-  <link rel="stylesheet" type="text/css" href="dist/slidebars.min.css"/>
-  <script type="text/javascript" src="sjcl.js"></script>
-  <script type="text/javascript" src="form.js"></script>
-  <script type="text/javascript" src="example.js"></script>
- 
- <script type="text/javascript" src="js/crypto/jquery-3.0.0.min.js"></script>
-    <!--[if lt IE 9]><script type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-    <!--[if le IE 9]><script type="text/javascript"  src="//github.com/davidchambers/Base64.js/blob/master/base64.js"></script><![endif]-->
-    <script type="text/javascript" src="js/crypto/aes.js"></script>
-	<script type="text/javascript" src="js/crypto/aes-ctr.js"></script>
-
-
-	
-</head>
-
-<body onload="loaded()">
-
-
-  <form id="theForm" onsubmit="return false;">
-    <!-- mode controls -->
- <div off-canvas="id-1 left overlay">
-   <span class="button" id="close-id-1">
-<span class="text">Close</span>
-</span>
-<div class="after-button"></div>
-  <div class="column" id="cmode">
-	<div class="box" id="pkey">
-	  <h2>Key Derivation</h2>
-	  <div class="section">
-		<div>
-		  <label for="salt">Salt:</label>
-		  <a class="random floatright" href="javascript:randomize('salt',2,0)">random</a>
-		</div>
-		<input type="text" id="salt" class="wide hex" autocomplete="off" size="17" maxlength="35"/>
-		<input type="checkbox" name="freshsalt" id="freshsalt" autocomplete="off" checked="checked" style="display:none;"/>
-		<label for="freshsalt" style="display:none;">Use fresh random salt for each new password</label>
-		<p class="explanation">
-		  Salt adds more variability to your key, and prevents attackers
-		  from using <a href="http://en.wikipedia.org/wiki/Rainbow_table">rainbow tables</a> to attack it.
-		</p>     
-	  </div>
-	  <div class="section">
-		<label for="iter">Strengthen by a factor of:</label>
-		<input type="text" name="iter" id="iter" value="1000" class="numeric" size="5" maxlength="5" autocomplete="off"/>
-		<p class="explanation">
-		  Strengthening makes it slower to compute the key corresponding to your
-		  password.  This makes it take much longer for an attacker to guess it.
-		</p>
-	  </div>
-	  <div class="section">
-		Key size:
-		<input type="radio" name="keysize" value="128" id="key128" autocomplete="off" onclick="extendKey(4)"/>
-		<label for="key128">128</label>
-		<input type="radio" name="keysize" value="192" id="key192" autocomplete="off" onclick="extendKey(6)"/>
-		<label for="key192">192</label>
-		<input type="radio" name="keysize" value="256" id="key256" checked="checked" autocomplete="off" onclick="extendKey(8)"/>
-		<label for="key256">256</label>
-		<p class="explanation">
-		  128 bits should be secure enough, but you can generate a longer
-		  key if you wish.
-		</p>
-	  </div>
-	  <!-- cipher key -->
-	  <div class="section" style="display:none;">
-		<div>
-		  <label for="key">Key:</label>
-		  <!--
-		  <a class="random floatright" href="javascript:randomizeKey()">random</a>
-		  -->
-		</div>
-		<textarea class="hex noselect" readonly="readonly" unselectable="on" id="key" name="key" rows="2" autocomplete="off"></textarea>
-		<p class="explanation">
-		  This key is computed from your password, salt and strengthening factor.  It
-		  will be used internally by the cipher.
-		</p>
-	  </div>
-	</div>
-  
-	<div class="box">
-	  <h2>Cipher Parameters</h2>
-	  <div class="section">
-		Cipher mode:
-		<input type="radio" name="mode" value="ccm" id="ccm" autocomplete="off"/>
-		<label for="ccm"><acronym title="Counter mode with Cipher block chaining Message authentication code">CCM</acronym></label>
-		<input type="radio" name="mode" value="ocb2" id="ocb2" checked="checked" autocomplete="off"/>
-		<label for="ocb2"><acronym title="Offset CodeBook mode, version 2.0">OCB2</acronym></label>
-		<input type="radio" name="mode" value="gcm" id="gcm" autocomplete="off"/>
-		<label for="gcm"><acronym title="Galois Counter Mode">GCM</acronym></label>
-		<p class="explanation">
-		  <a href="http://en.wikipedia.org/wiki/OCB_mode">OCB2 mode</a> (patented) and
-		  <a href="http://en.wikipedia.org/wiki/GCM_mode">GCM mode</a> (unencumbered)
-		  are slightly faster and have more features than
-		  <a href="http://en.wikipedia.org/wiki/CCM_mode">CCM mode</a>.
-		</p>
-	  </div>
-	  
-	  <div class="section">
-		<div>
-		  <label for="iv">Initialization vector:</label>
-		  <a class="random floatright" href="javascript:randomize('iv',4,0)">random</a>
-		</div>
-		<input type="text" name="iv" id="iv" class="wide hex" size="32" maxlength="35" autocomplete="off"/>
-		<input type="checkbox" id="freshiv" autocomplete="off" checked="checked"  style="display:none;"/>
-		<label for="freshiv"  style="display:none;">Choose a new random IV for every message.</label>
-		<p class="explanation">
-		  The IV adds randomness to your message each time you send it.
-		</p>
-	  </div>
-	  
-	  <div class="section">
-		Authentication strength:
-		<input type="radio" name="tag" value="64" id="tag64" autocomplete="off" checked="checked"/>
-		<label for="tag64">64</label>
-		<input type="radio" name="tag" value="96" id="tag96" autocomplete="off"/>
-		<label for="tag96">96</label>
-		<input type="radio" name="tag" value="128" id="tag128" checked="checked" autocomplete="off"/>
-		<label for="tag128">128</label>
-		<p class="explanation">
-The longer the authentication tag, the harder it is
-		  for somebody to change your encrypted message.
-		</p>
-	  </div>
-	  
-	  <div class="section" style="display:none;">
-		<input type="checkbox" name="json" id="json" autocomplete="off" checked="checked"/>
-		<label for="json">Send the parameters and authenticated data along
-		  with the message.</label>
-		 <p class="explanation">
-		   These parameters are required to decrypt your message later.
-		 </p>
-	  </div>
-	</div>
-  </div>
- </div>
-  <div class="column" id="ctexts">
-<div id="status">
-</div>
-  <span class="button" id="open-id-1">
-<span class="text">Settings</span>
-</span>
-<div class="after-button"></div>
-      <!-- Password and pbkdf2 parameters -->
-    <div class="box" id="ppassword">
-      <h2>Password</h2>
-      <div class="section">
-        <label for="password">Password:</label>
-        <input type="password" class="wide" name="password" id="password" autocomplete="off" tabindex="1"/>
-        <p class="explanation">
-          Choose a strong, random password.
-        </p>
-      </div>
-    </div>
-    <div id="pplaintext" class="box">
-      <h2>Plaintext</h2>
-      <div class="section">
-        <label for="plaintext">Secret message:</label>
-        <textarea id="plaintext" autocomplete="off" rows="5" tabindex="2"></textarea>
-        <div class="explanation">
-          This message will be encrypted, so that nobody can read it or change it
-          without your password.
-        </div>
-      </div>  
-   
-      <div class="section">
-        <label for="adata">Authenticated data:</label>
-        <textarea id="adata" autocomplete="off" tabindex="3" rows="1" ></textarea>
-        <div class="explanation">
-          This auxilliary message isn't secret, but its integrity will be checked
-          along with the integrity of the message.
-        </div>
-      </div>
-    </div>
-    
-    <div id="buttons">
-      <a href="#" onclick="EncryptIt()" id="encrypt" tabindex="4"><span class="turnDown">encrypt</span></a>
-      <a href="#" onclick="DecryptIt()" id="decrypt" tabindex="6"><span class="turnUp">decrypt</span></a>
-    </div>
-    
-	<div id="pciphertext" class="box">
-      <h2>Encrypt it - Decrypt it</h2>
-		<textarea name="aescipher" class="width-full" id="aescipher" autocomplete="off" rows="5" tabindex="7"></textarea>
-      <div class="explanation">
-        Your message, encrypted so that nobody can read it
-        or change it without your password.
-      </div>
-    </div>
-	
-    <div class="box" style="display:none;">
-      <h2>Ciphertext</h2>
-      <label for="ciphertext">Ciphertext:</label>
-      <textarea class="noselect" readonly="readonly" unselectable="on" id="ciphertext" autocomplete="off" rows="5" tabindex="10"></textarea>
-      <div class="explanation">
-        Intermediate encryption
-      </div>
-    </div>
-	
-			
-  </form>
-	<script type="text/javascript" src="dist/slidebars.min.js"></script>
-    <script>
-	'use strict';
-	function EncryptIt() {
-		doEncrypt();
-		aesencrypt();
-	}
-	
-	function DecryptIt() {
-		aesdecrypt();
-		doDecrypt();
-	}
-	function aesencrypt() {
-                var ciphertext = Aes.Ctr.encrypt($('#ciphertext').val(), $('#password').val(), 256);
-                $('#aescipher').val(ciphertext);
-            }
-	function aesdecrypt() {
-                var plain = Aes.Ctr.decrypt($('#aescipher').val(), $('#password').val(), 256);
-                $('#ciphertext').val(plain);
-            }
-    </script>
- <script>
-      ( function ( $ ) {
-        // Initialize Slidebars
-        var controller = new slidebars();
-        controller.init();
+	<head>
+		<title>Encrypted notes</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta charset="utf-8">
 		
-		// Toggle Slidebars
-$( '#open-id-1' ).on( 'click', function ( event ) {
-  // Stop default action and bubbling
-  event.stopPropagation();
-  event.preventDefault();
-
-  // Open the Slidebar with id 'id-1'
-  controller.open( 'id-1' );
-} );
-$( '#close-id-1' ).on( 'click', function ( event ) {
-  // Stop default action and bubbling
-  event.stopPropagation();
-  event.preventDefault();
-
-  // Close the Slidebar with id 'id-1'
-  controller.close( 'id-1' );
-} );
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
 		
-      } ) ( jQuery );
-    </script>
+		<link rel="stylesheet" type="text/css" href="eminote.css"/>
+		<link rel="stylesheet" type="text/css" href="dist/slidebars.min.css"/>
+		<link rel="stylesheet" type="text/css" href="lang/languageswitcher.css">
+		
+		<script type="text/javascript" src="mainjs/sjcl.js"></script>
+		<script type="text/javascript" src="mainjs/form.js"></script>
+		<script type="text/javascript" src="mainjs/eminote.js"></script>
+	 
+		<script type="text/javascript" src="crypto/jquery-3.1.1.min.js"></script>
+		<!--[if lt IE 9]><script type="text/javascript" src="/old-ie/html5shim.js"></script><![endif]-->
+		<!--[if le IE 9]><script type="text/javascript"  src="/old-ie/base64.js"></script><![endif]-->
+		<script type="text/javascript" src="crypto/aes.js"></script>
+		<script type="text/javascript" src="crypto/aes-ctr.js"></script>
+	</head>
+	<body onload="loaded()">
+		<form id="theForm" onsubmit="return false;">
+			<!-- Settings canvas -->
+			<div off-canvas="id-1 left overlay">
+				<!-- Settings content -->
+				<div class="column" id="cmode">
+					<div class="box" id="pkey">
+						<h2 class="lang-en">Key Derivation</h2>
+						<h2 class="lang-ro">Obținerea Cheii</h2>
+						<div class="section">
+							<div>
+								<label class="lang-en" for="salt">Salt:</label>
+								<label class="lang-ro" for="salt">Valoare arbitrară:</label>
+								<a class="random floatright lang-en" href="javascript:randomize('salt',2,0)">random</a>
+								<a class="random floatright lang-ro" href="javascript:randomize('salt',2,0)">aleatoriu</a>
+							</div>
+							<input type="text" id="salt" class="wide hex" autocomplete="off" size="17" maxlength="35"/>
+							<input type="checkbox" name="freshsalt" id="freshsalt" autocomplete="off" checked="checked" style="display:none;"/>
+							<label for="freshsalt" style="display:none;">Use fresh random salt for each new password</label>
+							<p class="explanation lang-en">
+								Salt adds more variability to your key, and prevents attackers
+								from using <a href="http://en.wikipedia.org/wiki/Rainbow_table">rainbow tables</a> to attack it.
+							</p>
+							<p class="explanation lang-ro">
+								Valoarea arbitrară adaugă mai multă variație pentru cheie și previne utilizarea de persoane rău intenționate a <a href="http://en.wikipedia.org/wiki/Rainbow_table">rainbow tables</a> pentru decriptare.
+							</p> 							
+						</div>
+						<div class="section">
+							<label class="lang-en" for="iter">Strengthen by a factor of:</label>
+							<label class="lang-ro" for="iter">Factor de întărire:</label>
+							<input type="text" name="iter" id="iter" value="1000" class="numeric" size="5" maxlength="5" autocomplete="off"/>
+							<p class="explanation lang-en">
+								Strengthening makes it slower to compute the key corresponding to your
+								password. This makes it take much longer for an attacker to guess it.
+							</p>
+							<p class="explanation lang-ro">
+								Acest factor adaugă un număr de iterații ceea ce duce la un timp semnificativ mai îndelungat pentru un atacator de a ghici parola dar face mai dificilă calcularea cheii corespunzătoare. 
+							</p>
+						</div>
+						<div class="section">
+							<label class="lang-en">Key size:</label>
+							<label class="lang-ro">Dimensiune cheie:</label>
+							<input type="radio" name="keysize" value="128" id="key128" autocomplete="off" onclick="extendKey(4)"/>
+							<label for="key128">128</label>
+							<input type="radio" name="keysize" value="192" id="key192" autocomplete="off" onclick="extendKey(6)"/>
+							<label for="key192">192</label>
+							<input type="radio" name="keysize" value="256" id="key256" checked="checked" autocomplete="off" onclick="extendKey(8)"/>
+							<label for="key256">256</label> bits 
+							<p class="explanation lang-en">
+								The key is computed from your password, salt and strengthening factor.  It
+								will be used internally by the below selected cipher.
+							</p>
+							<p class="explanation lang-ro">
+								Cheia este calculată din parolă, valoarea arbitrară și factorul de întărire. Va fi folosită intern de cifrul ales mai jos.
+							</p>
+						</div>
+						<!-- cipher key -->
+						<div class="section" style="display:none;">
+							<div>
+								<label for="key">Key:</label>
+							</div>
+							<textarea class="hex noselect" readonly="readonly" unselectable="on" id="key" name="key" rows="2" autocomplete="off"></textarea>
+							<p class="explanation">
+								This key is computed from your password, salt and strengthening factor.  It
+								will be used internally by the cipher.
+							</p>
+						</div>
+					</div>
+					<div class="box">
+						<h2 class="lang-en">Cipher Parameters</h2>
+						<h2 class="lang-ro">Parameterii Cifru</h2>
+						<div class="section">
+							<label class="lang-en">Cipher mode:</label>
+							<label class="lang-ro">Tipul cifrului:</label>
+							<input type="radio" name="mode" value="ccm" id="ccm" autocomplete="off"/>
+							<label class="lang-en" for="ccm"><acronym title="Counter mode with Cipher block chaining Message authentication code">CCM</acronym></label>
+							<label class="lang-ro" for="ccm"><acronym title="Modul contor cu Cifru bloc de înlănțuire cod de autentificare mesaj">CCM</acronym></label>
+							<input type="radio" name="mode" value="ocb2" id="ocb2" checked="checked" autocomplete="off"/>
+							<label class="lang-en" for="ocb2"><acronym title="Offset CodeBook mode, version 2.0">OCB2</acronym></label>
+							<label class="lang-ro" for="ocb2"><acronym title="Modul de offset codebook, versiunea 2.0">OCB2</acronym></label>
+							<input type="radio" name="mode" value="gcm" id="gcm" autocomplete="off"/>
+							<label class="lang-en" for="gcm"><acronym title="Galois Counter Mode">GCM</acronym></label>
+							<label class="lang-ro" for="gcm"><acronym title="Modul contor Galois">GCM</acronym></label>
+							<p class="explanation lang-en">
+								<a href="http://en.wikipedia.org/wiki/OCB_mode">OCB2 mode</a> (patented) and
+								<a href="http://en.wikipedia.org/wiki/GCM_mode">GCM mode</a> (unencumbered)
+								are slightly faster and have more features than
+								<a href="http://en.wikipedia.org/wiki/CCM_mode">CCM mode</a>.
+							</p>
+							<p class="explanation lang-ro">
+								<a href="http://en.wikipedia.org/wiki/OCB_mode">Modul OCB2</a> (patentat) și
+								<a href="http://en.wikipedia.org/wiki/GCM_mode">modul GCM</a> (negrevat)
+								sunt un pic mai rapide și au mai multe caracteristici decât 
+								<a href="http://en.wikipedia.org/wiki/CCM_mode">modul CCM</a>.
+							</p>
+						</div>
+						<div class="section">
+							<div>
+								<label class="lang-en" for="iv">Initialization vector:</label>
+								<label class="lang-ro" for="iv">Vector initializare:</label>
+								<a class="random floatright lang-en" href="javascript:randomize('iv',4,0)">random</a>
+								<a class="random floatright lang-ro" href="javascript:randomize('iv',4,0)">aleatoriu</a>
+							</div>
+							<input type="text" name="iv" id="iv" class="wide hex" size="32" maxlength="35" autocomplete="off"/>
+							<input type="checkbox" id="freshiv" autocomplete="off" checked="checked"  style="display:none;"/>
+							<label for="freshiv"  style="display:none;">Choose a new random IV for every message.</label>
+							<p class="explanation lang-en">
+								The IV adds randomness to your message each time you send it.
+							</p>
+							<p class="explanation lang-ro">
+								Acest vector aleator se adaugă prefixat la mesaj de fiecare dată când îl trimiteți.
+							</p>
+						</div>
+						<div class="section">
+							<label class="lang-en">Authentication strength:</label>
+							<label class="lang-ro">Puterea de autentificare:</label>
+							<input type="radio" name="tag" value="64" id="tag64" autocomplete="off" checked="checked"/>
+							<label for="tag64">64</label>
+							<input type="radio" name="tag" value="96" id="tag96" autocomplete="off"/>
+							<label for="tag96">96</label>
+							<input type="radio" name="tag" value="128" id="tag128" checked="checked" autocomplete="off"/>
+							<label for="tag128">128</label> bits 
+							<p class="explanation lang-en">
+								The longer the authentication tag, the harder it is
+								for somebody to change your encrypted message.
+							</p>
+							<p class="explanation lang-ro">
+								Cu cât este mai lung tag-ul de autentificare, cu atât mai greu este de a modifica mesajul criptat.
+							</p>
+						</div>  
+						<div class="section" style="display:none;">
+							<input type="checkbox" name="json" id="json" autocomplete="off" checked="checked"/>
+							<label for="json">Send the parameters and authenticated data along with the message.</label>
+							<p class="explanation">
+								These parameters are required to decrypt your message later.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Main content-->
+			<div class="column" id="ctexts">
+				<div class="header">
+					<img src="img/logo.png" alt="logo" />
+					<h1>EMINOTE</h1>
+				</div>
+				<span class="toggle" id="toggle-id-1">
+					<img class="toggle-img"src="img/toggle.png" alt="settings" />
+				</span>
+				<div class="after-button"></div>
+				<!-- Password and pbkdf2 parameters -->
+				<div class="box" id="ppassword">
+					<h2 class="lang-en">Password</h2>
+					<h2 class="lang-ro">Parolă</h2>
+					<div class="section">
+						<label class="lang-en" for="password">Password:</label>
+						<label class="lang-ro" for="password">Parola:</label>
+						<input type="password" class="wide" name="password" id="password" autocomplete="off" tabindex="1"/>
+						<p class="explanation lang-en">
+							Choose a strong and easy to remember password.
+						</p>
+						<p class="explanation lang-ro">
+							Alege o parolă puternică și pe care să o poți ține minte ușor.
+						</p>
+					</div>
+				</div>
+				<div id="pplaintext" class="box">
+					<h2 class="lang-en">My secret note</h2>
+					<h2 class="lang-ro">Nota mea secretă</h2>
+					<div class="section">
+						<label class="lang-en" for="plaintext">Insert here a very large text:</label>
+						<label class="lang-ro" for="plaintext">Introdu aici un text foarte mare:</label>
+						<textarea id="plaintext" autocomplete="off" rows="8" tabindex="2"></textarea>
+						<div class="explanation lang-en">
+							Press the below encrypt arrow to change this note into an <b>Eminote</b>.
+						</div>
+						<div class="explanation lang-ro">
+							Apasă săgeata criptare pentru a transforma această notă într-o <b>Eminote</b>.
+						</div>
+					</div>  
+					<div class="section" style="display:none;">
+						<label for="adata">Authenticated data:</label>
+						<textarea id="adata" autocomplete="off" tabindex="3" rows="1" ></textarea>
+						<div class="explanation">
+							This auxilliary message isn't secret, but its integrity will be checked
+							along with the integrity of the message.
+						</div>
+					</div>
+				</div>
+				<div id="buttons">
+					<a href="#" onclick="EncryptIt()" id="encrypt" tabindex="4">
+						<span class="turnDown lang-en">encrypt</span>
+						<span class="turnDown lang-ro">criptează</span>
+					</a>
+					<a href="#" onclick="DecryptIt()" id="decrypt" tabindex="6">
+						<span class="turnUp lang-en">decrypt</span>
+						<span class="turnUp lang-ro">decriptează</span>
+					</a>
+				</div>
+				<div id="pciphertext" class="box">
+					<h2 class="lang-en">Eminote -  Encrypted note</h2>
+					<h2 class="lang-ro">Eminote - Nota criptată</h2>
+					<textarea name="aescipher" class="width-full" id="aescipher" autocomplete="off" rows="6" tabindex="7"></textarea>
+					<div class="explanation lang-en">
+						Your note as <b>Eminote</b>, encrypted so that nobody can read it without your password.
+					</div>
+					<div class="explanation lang-ro">
+						Nota ta în formă <b>Eminote</b>, criptată să nu poată fi citită de nimeni fară a cunoaște parola.
+					</div>
+				</div>
+				<div class="box" style="display:none;">
+					<h2>Ciphertext</h2>
+					<label for="ciphertext">Ciphertext:</label>
+					<textarea class="noselect" readonly="readonly" unselectable="on" id="ciphertext" autocomplete="off" rows="5" tabindex="10"></textarea>
+					<div class="explanation">
+						Intermediate encryption
+					</div>
+				</div>
+			</div>		
+		</form>
+		<div id="country-select">
+			<form action="">
+				<select id="country-options" name="country-options">
+					<option selected="selected" title="#" value="en">english</option>
+					<option title="#" value="ro">romania</option>
+				</select>
+				<input value="Select" type="submit" />
+			</form>
+		</div>
+		<!-- Scripts -->
+		<script type="text/javascript" src="dist/slidebars.min.js"></script>
+		<script>
+		$.fn.animateRotate = function(angle, duration, easing, complete) {
+				var args = $.speed(duration, easing, complete);
+				var step = args.step;
+				return this.each(function(i, e) {
+					args.complete = $.proxy(args.complete, e);
+					args.step = function(now) {
+						$.style(e, 'transform', 'rotate(' + now + 'deg)');
+						if (step) return step.apply(e, arguments);
+					};
+
+					$({deg: 0}).animate({deg: angle}, args);
+				});
+			};
+		'use strict';
+		function EncryptIt() {
+			doEncrypt();
+			aesencrypt();
+		}
+
+		function DecryptIt() {
+			aesdecrypt();
+			doDecrypt();
+		}
+		function aesencrypt() {
+			var ciphertext = Aes.Ctr.encrypt($('#ciphertext').val(), $('#password').val(), 256);
+			$('#aescipher').val(ciphertext);
+		}
+		function aesdecrypt() {
+			var plain = Aes.Ctr.decrypt($('#aescipher').val(), $('#password').val(), 256);
+			$('#ciphertext').val(plain);
+		}
+		</script>
+		<script>
+			function changelang(){
+				var mylang = document.getElementsByTagName('html')[0].getAttribute('lang');
+				if (mylang=='en') {
+					$('.lang-ro').hide();
+					$('.lang-en').show();
+				}
+				else {
+					$('.lang-ro').show();
+					$('.lang-en').hide();
+				}
+			}
+		</script>
+		<script>
+		( function ( $ ) {
+			changelang();
+			// Initialize Slidebars
+			var controller = new slidebars();
+			controller.init();
+			var elementOffset = $('#country-select').offset().top;
+			var	distance      = (0 - elementOffset) + 10;
+			document.getElementById("country-select").style.top = distance + 'px';
+			// Toggle Slidebars
+			angle = 0;
 	
-</body>
+			$( '#toggle-id-1' ).on( 'click', function ( event ) {
+			  // Stop default action and bubbling
+			 // event.stopPropagation();
+			  event.preventDefault();
+			  // Open the Slidebar with id 'id-1'
+			  controller.toggle( 'id-1' );
+			  $(".toggle-img").animateRotate(angle, {
+				  duration: 25,
+				  easing: 'linear',
+				  complete: function () { (angle < 90) ? angle = angle + 45 : angle = angle - 45  ; },
+				  step: function () {}
+				});
+				
+			} );	
+		} ) ( jQuery );
+		</script>
+		
+		<script src="lang/languageswitcher.js"></script>
+	</body>
 </html>
