@@ -110,6 +110,48 @@
 								</div>
 							</div>
 						</div>
+						<div class="row row-bottom-padded-sm">
+							<div class="col-md-12 fh5co-counter">
+								<div id="buttons">
+								<button href="#" onclick="EncryptIt()" id="encrypt" tabindex="6">
+									<span class="turnDown lang-en">encrypt</span>
+									<span class="turnDown lang-ro">criptează</span>
+								</button>
+								<button href="#" onclick="DecryptIt()" id="decrypt" tabindex="7">
+									<span class="turnUp lang-en">decrypt</span>
+									<span class="turnUp lang-ro">decriptează</span>
+								</button>
+								</div>
+							</div>
+						</div>
+						<div class="row row-bottom-padded-sm">
+							<div class="col-md-12 fh5co-counter">
+								<div class="fh5co-number fh5co-left">3</div>
+								<h3 class="border-bottom lang-en">Eminote -  Encrypted note:</h3>
+								<h3 class="border-bottom lang-ro">Eminote - Nota criptată:</h3>
+								<div class="fh5co-text">
+									
+									<textarea type="text" class="form-control" id="aescipher" name="aescipher" autocomplete="off" rows="6"></textarea>
+									<p class="explanation lang-en">
+									The obtained <b>Eminote</b>, encrypted so that nobody can read it without your password.
+									</p>
+									<p class="explanation lang-ro">
+									<b>Eminote</b> rezultată, criptată să nu poată fi citită de nimeni fară a cunoaște parola.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="row row-bottom-padded-sm" style="display:none;">
+							<div class="col-md-12">
+								<h3 class="border-bottom">Ciphertext:</h3>
+								<div class="fh5co-text">									
+									<textarea type="text" class="form-control" class="noselect" readonly="readonly" unselectable="on" id="ciphertext" autocomplete="off" rows="5" ></textarea>
+									<p class="explanation">
+									Intermediate encryption
+									</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="fh5co-tab-content" data-content="2">
@@ -207,8 +249,6 @@
 		<script src="js/bootstrap.min.js"></script>
 		<!-- Waypoints -->
 		<script src="js/jquery.waypoints.min.js"></script>
-		<!-- Easy PieChart -->
-		<script src="js/jquery.easypiechart.min.js"></script>
 		<!-- MAIN JS -->
 		<script src="js/main.js"></script>
 	</body>
