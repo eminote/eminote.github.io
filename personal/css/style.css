@@ -56,6 +56,13 @@ position: relative;
 	width: 100%;
 		align-content: center;
 }
+
+.icon-eminote{
+	max-width: 30px;
+	margin: 0px auto;
+	align-content: center;
+}
+
 a {
   color: #17e7a4;
   -webkit-transition: 0.5s;
@@ -562,6 +569,7 @@ input[type="checkbox"], input[type="radio"] {
 .noselect:focus {
    outline: none;
 }
+
 /* -- Circular Work -- */
 .gridcontainer {
 	width: 720px;
@@ -570,8 +578,8 @@ input[type="checkbox"], input[type="radio"] {
 
 .grid_3 {
   display: inline;
-  float: left;
-  margin-left: 40%;/*margin-left: 10px;*/
+  float: right;
+  margin-right: 20%;/*margin-left: 10px;*/
   /*margin-right: 10px;*/
   width: 220px;
 }
