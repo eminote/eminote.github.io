@@ -22,7 +22,7 @@
 	};
 
 	var getHeight = function() {
-		var extraHeight = 110;
+		var extraHeight = 50;
 
 		if ( isMobile.any() ) extraHeight = 50;
 		

@@ -44,29 +44,13 @@
 	<![endif]-->
 	<script>if ( typeof window.JSON === 'undefined' ) { document.write('<script src="js/json2.js"><\/script>'); }</script>
 	<!-- jQuery -->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/jquery.history.js"></script>	
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.history.js"></script>	
 	
 	</head>
-	<body style="background-image: url(images/bg_img.jpg);">
+	<body style="background-image: url(images/bg_img.jpg);" onload="loaded()">
+	<form id="theForm" onsubmit="return false;">
 		<div id="fh5co-main">
-			<header id="fh5co-header">
-				<div class="logo">
-						<img src="images/eblack.png" alt="logo" />
-						<h1>minote</h1>
-					</div>
-				<div class="row" id="social-icons-header">
-					<div class="text-center">
-						<ul class="fh5co-social">
-							<li><a href="support@eminote.zohosupport.com"><i class="icon-envelope"></i></a></li>
-							<li><a href="#"><i class="icon-twitter"></i></a></li>
-							<li><a href="#"><i class="icon-instagram"></i></a></li>
-							<li><a href="#"><i class="icon-google"></i></a></li>
-							<li><a href="#"><i class="icon-linkedin"></i></a></li>
-						</ul>
-					</div>
-				</div>
-			</header>
 			<div class="fh5co-tab-wrap">
 				<ul class="fh5co-tab-menu">
 					<li class="active"><a class="home" href="#" id="Encrypt" data-tab="1"><span class="icon icon-lock"></span><span class="menu-text lang-en">Encrypt</span><span class="menu-text lang-ro">Criptează</span></a></li>
@@ -95,43 +79,63 @@
 						</div>
 						<div class="row row-bottom-padded-sm">
 							<div class="col-md-12 fh5co-counter">
+								<div class="fh5co-number fh5co-left"></div>
+								<h3 class="border-bottom lang-en">Authentification info (optional):</h3>
+								<h3 class="border-bottom lang-ro">Info de autentificare (optional):</h3>
+								<div class="fh5co-text">
+									<textarea id="adata" class="form-control" autocomplete="off" tabindex="2" rows="1" ></textarea>
+									<p class="explanation lang-en">
+									Its integrity will be checked durring decryption so you'll know if someone changed your encrypted note (eg: "The fox has four legs and a tail").
+									</p>
+									<p class="explanation lang-ro">
+									Integritatea sa va fi verificată la decriptare, astfel încât vei ști dacă cineva a modificat nota ta criptată (ex: „Vulpea are patru picioare și o coadă”).
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="row row-bottom-padded-sm">
+							<div class="col-md-12 fh5co-counter">
 								<div class="fh5co-number fh5co-left">2</div>
 								<h3 class="border-bottom lang-en">My secret note to encrypt:</h3>
 								<h3 class="border-bottom lang-ro">Nota mea secretă pentru criptare:</h3>
 								<div class="fh5co-text">
-									
-									<textarea type="text" class="form-control" id="plaintext" autocomplete="off" rows="8" tabindex="2"></textarea>
+									<textarea type="text" class="form-control" id="plaintext" autocomplete="off" rows="8" tabindex="3"></textarea>
 									<p class="explanation lang-en">
-									Type here the text that you what to encrypt. Press the below encrypt arrow to change this note into an <b>Eminote</b>.
+									Type here the text that you what to encrypt, and than press the below <b>Eminote</b> button.
 									</p>
 									<p class="explanation lang-ro">
-									Tastează aici textul pe care vrei să îl criptezi. Apasă săgeata criptare pentru a transforma această notă într-o <b>Eminote</b>.
+									Tastează aici textul pe care vrei să îl criptezi, apoi apasă butonul <b>Eminote</b> de mai jos.
 									</p>
 								</div>
 							</div>
 						</div>
 						<div class="row row-bottom-padded-sm">
-							<div class="col-md-12 fh5co-counter">
-								<div id="buttons">
-								<button href="#" onclick="EncryptIt()" id="encrypt" tabindex="6">
-									<span class="turnDown lang-en">encrypt</span>
-									<span class="turnDown lang-ro">criptează</span>
-								</button>
-								<button href="#" onclick="DecryptIt()" id="decrypt" tabindex="7">
-									<span class="turnUp lang-en">decrypt</span>
-									<span class="turnUp lang-ro">decriptează</span>
-								</button>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="grid_3">
+									<div class="fmcircle_out">
+										<div class="button" role="button" onclick="EncryptIt()" id="encrypt" tabindex="4">
+											<div class="fmcircle_border">
+												<div class="fmcircle_in fmcircle_blue">
+													<span class="lang-en">&#8675; ENCRYPT &#8675;</span>
+													<span class="lang-ro">&#8675; CRIPTEAZĂ &#8675;</span>
+													<img src="images/etransp.png" alt="" />
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
+						</div>
 						</div>
 						<div class="row row-bottom-padded-sm">
 							<div class="col-md-12 fh5co-counter">
 								<div class="fh5co-number fh5co-left">3</div>
-								<h3 class="border-bottom lang-en">Eminote -  Encrypted note:</h3>
-								<h3 class="border-bottom lang-ro">Eminote - Nota criptată:</h3>
+								<h3 class="border-bottom lang-en">Eminote -  encrypted note:</h3>
+								<h3 class="border-bottom lang-ro">Eminote - nota criptată:</h3>
 								<div class="fh5co-text">
 									
-									<textarea type="text" class="form-control" id="aescipher" name="aescipher" autocomplete="off" rows="6"></textarea>
+									<textarea type="text" class="form-control" id="aescipher" name="aescipher" autocomplete="off" rows="6" tabindex="6"></textarea>
 									<p class="explanation lang-en">
 									The obtained <b>Eminote</b>, encrypted so that nobody can read it without your password.
 									</p>
@@ -154,44 +158,174 @@
 						</div>
 					</div>
 				</div>
+				<!-- Settings -->
 				<div class="fh5co-tab-content" data-content="2">
 					<div class="fh5co-content-inner">
 						<div class="row">
 							<div class="col-md-12">
-								<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-
-								<div class="fh5co-feature">
-									<div class="fh5co-icon">
-										<i class="icon-key"></i>
+								<h2 class="lang-en">Key Derivation</h2>
+								<h2 class="lang-ro">Obținerea Cheii</h2>
+								<div class="section">
+									<div>
+										<label class="lang-en" for="salt">Salt:</label>
+										<label class="lang-ro" for="salt">Valoare arbitrară:</label>
+										<a class="random floatright lang-en" href="javascript:randomize('salt',2,0)">random</a>
+										<a class="random floatright lang-ro" href="javascript:randomize('salt',2,0)">aleatoriu</a>
 									</div>
-									<div class="fh5co-text">
-										<h2>2001-2004</h2>
-										<p>Far far away, behind the word mountains, far from the countries.</p>
-									</div>
+									<input type="text" class="form-control" id="salt" class="wide hex" autocomplete="off" size="17" maxlength="35"/>
+									<input type="checkbox" class="checkbox-inline" name="freshsalt" id="freshsalt" autocomplete="off" checked="checked" style="display:none;"/>
+									<label for="freshsalt" style="display:none;">Use fresh random salt for each new password</label>
+									<p class="explanation lang-en">
+										Salt adds more variability to your key, and prevents attackers
+										from using <a href="http://en.wikipedia.org/wiki/Rainbow_table">rainbow tables</a> to attack it.
+									</p>
+									<p class="explanation lang-ro">
+										Valoarea arbitrară adaugă mai multă variație pentru cheie și previne utilizarea de persoane rău intenționate a <a href="http://en.wikipedia.org/wiki/Rainbow_table">rainbow tables</a> pentru decriptare.
+									</p> 							
 								</div>
-
-								<div class="fh5co-feature">
-									<div class="fh5co-icon">
-										<i class="icon-graduation-cap"></i>
-									</div>
-									<div class="fh5co-text">
-										<h2>2004-2008</h2>
-										<p>Far far away, behind the word mountains, far from the countries.</p>
-									</div>
-								</div>
-
-								<div class="fh5co-feature">
-									<div class="fh5co-icon">
-										<i class="icon-graduation-cap"></i>
-									</div>
-									<div class="fh5co-text">
-										<h2>2008-2012</h2>
-										<p>Far far away, behind the word mountains, far from the countries.</p>
-									</div>
-								</div>
-
 							</div>
-							
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-8">
+									<div>
+										<label class="lang-en" for="iter">Strengthen by a factor of:</label>
+										<label class="lang-ro" for="iter">Factor de întărire:</label>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<input type="text" class="form-control" name="iter" id="iter" value="1000" class="numeric" size="5" maxlength="5" autocomplete="off"/>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<p class="explanation lang-en">
+									Strengthening makes it slower to compute the key corresponding to your
+									password. This makes it take much longer for an attacker to guess it.
+								</p>
+								<p class="explanation lang-ro">
+									Acest factor adaugă un număr de iterații ceea ce duce la un timp semnificativ mai îndelungat pentru un atacator de a ghici parola dar face mai dificilă calcularea cheii corespunzătoare. 
+								</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="section">
+									<label class="lang-en">Key size:</label>
+									<label class="lang-ro">Dimensiune cheie:</label>
+									<input type="radio" class="radio radio-inline" name="optradio keysize" value="128" id="key128" autocomplete="off" onclick="extendKey(4)"/>
+									<label for="key128">128</label>
+									<input type="radio" class="radio radio-inline" name="optradio keysize" value="192" id="key192" autocomplete="off" onclick="extendKey(6)"/>
+									<label for="key192">192</label>
+									<input type="radio" class="radio radio-inline" name="optradio keysize" value="256" id="key256" checked="checked" autocomplete="off" onclick="extendKey(8)"/>
+									<label for="key256">256</label> bits 
+									<p class="explanation lang-en">
+										The key is computed from your password, salt and strengthening factor.  It
+										will be used internally by the below selected cipher.
+									</p>
+									<p class="explanation lang-ro">
+										Cheia este calculată din parolă, valoarea arbitrară și factorul de întărire. Va fi folosită intern de cifrul ales mai jos.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<!-- cipher key -->
+								<div class="section" style="display:none;">
+									<div>
+										<label for="key">Key:</label>
+									</div>
+									<textarea class="hex noselect form-control" readonly="readonly" unselectable="on" id="key" name="key" rows="2" autocomplete="off"></textarea>
+									<p class="explanation">
+										This key is computed from your password, salt and strengthening factor.  It
+										will be used internally by the cipher.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<h2 class="lang-en">Cipher Parameters</h2>
+								<h2 class="lang-ro">Parameterii Cifru</h2>
+								<div class="section">
+									<label class="lang-en">Cipher mode:</label>
+									<label class="lang-ro">Tipul cifrului:</label>
+									<input type="radio" class="radio radio-inline" name="mode" value="ccm" id="ccm" autocomplete="off"/>
+									<label class="lang-en" for="ccm"><acronym title="Counter mode with Cipher block chaining Message authentication code">CCM</acronym></label>
+									<label class="lang-ro" for="ccm"><acronym title="Modul contor cu Cifru bloc de înlănțuire cod de autentificare mesaj">CCM</acronym></label>
+									<input type="radio" class="radio radio-inline" name="mode" value="ocb2" id="ocb2" checked="checked" autocomplete="off"/>
+									<label class="lang-en" for="ocb2"><acronym title="Offset CodeBook mode, version 2.0">OCB2</acronym></label>
+									<label class="lang-ro" for="ocb2"><acronym title="Modul de offset codebook, versiunea 2.0">OCB2</acronym></label>
+									<input type="radio" class="radio radio-inline" name="mode" value="gcm" id="gcm" autocomplete="off"/>
+									<label class="lang-en" for="gcm"><acronym title="Galois Counter Mode">GCM</acronym></label>
+									<label class="lang-ro" for="gcm"><acronym title="Modul contor Galois">GCM</acronym></label>
+									<p class="explanation lang-en">
+										<a href="http://en.wikipedia.org/wiki/OCB_mode">OCB2 mode</a> (patented) and
+										<a href="http://en.wikipedia.org/wiki/GCM_mode">GCM mode</a> (unencumbered)
+										are slightly faster and have more features than
+										<a href="http://en.wikipedia.org/wiki/CCM_mode">CCM mode</a>.
+									</p>
+									<p class="explanation lang-ro">
+										<a href="http://en.wikipedia.org/wiki/OCB_mode">Modul OCB2</a> (patentat) și
+										<a href="http://en.wikipedia.org/wiki/GCM_mode">modul GCM</a> (negrevat)
+										sunt un pic mai rapide și au mai multe caracteristici decât 
+										<a href="http://en.wikipedia.org/wiki/CCM_mode">modul CCM</a>.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="section">
+									<div>
+										<label class="lang-en" for="iv">Initialization vector:</label>
+										<label class="lang-ro" for="iv">Vector initializare:</label>
+										<a class="random floatright lang-en" href="javascript:randomize('iv',4,0)">random</a>
+										<a class="random floatright lang-ro" href="javascript:randomize('iv',4,0)">aleatoriu</a>
+									</div>
+									<input type="text" class="form-control" name="iv" id="iv" class="wide hex" size="32" maxlength="35" autocomplete="off"/>
+									<input type="checkbox" class="checkbox-inline" id="freshiv" autocomplete="off" checked="checked"  style="display:none;"/>
+									<label for="freshiv" style="display:none;">Choose a new random IV for every message.</label>
+									<p class="explanation lang-en">
+										The IV adds randomness to your message each time you send it.
+									</p>
+									<p class="explanation lang-ro">
+										Acest vector aleator se adaugă prefixat la mesaj de fiecare dată când îl trimiteți.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="section">
+									<label class="lang-en">Authentication strength:</label>
+									<label class="lang-ro">Puterea de autentificare:</label>
+									<input type="radio" class="radio radio-inline" name="tag" value="64" id="tag64" autocomplete="off" checked="checked"/>
+									<label for="tag64">64</label>
+									<input type="radio" class="radio radio-inline" name="tag" value="96" id="tag96" autocomplete="off"/>
+									<label for="tag96">96</label>
+									<input type="radio" class="radio radio-inline" name="tag" value="128" id="tag128" checked="checked" autocomplete="off"/>
+									<label for="tag128">128</label> bits 
+									<p class="explanation lang-en">
+										The longer the authentication tag, the harder it is
+										for somebody to change your encrypted message.
+									</p>
+									<p class="explanation lang-ro">
+										Cu cât este mai lung tag-ul de autentificare, cu atât mai greu este de a modifica mesajul criptat.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">						
+								<div class="section" style="display:none;">
+									<input type="checkbox" class="checkbox-inline" name="json" id="json" autocomplete="off" checked="checked"/>
+									<label for="json">Send the parameters and authenticated data along with the message.</label>
+									<p class="explanation">
+										These parameters are required to decrypt your message later.
+									</p>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -242,7 +376,43 @@
 				</div>
 			</footer>
 		</div>
+		</form>
 		
+					<script type="text/javascript" src="crypto/sjcl.js"></script>
+		<script type="text/javascript" src="crypto/form.js"></script>
+		<script type="text/javascript" src="crypto/eminote.js"></script>
+
+			<!--[if lt IE 9]><script type="text/javascript" src="/old-ie/html5shim.js"></script><![endif]-->
+		<!--[if le IE 9]><script type="text/javascript"  src="/old-ie/base64.js"></script><![endif]-->
+		<script type="text/javascript" src="crypto/aes.js"></script>
+		<script type="text/javascript" src="crypto/aes-ctr.js"></script>
+		
+		<script>
+		'use strict';
+		function EncryptIt() {
+			doEncrypt();
+			aesencrypt();
+		}
+
+		function DecryptIt() {
+			aesdecrypt();
+			doDecrypt();
+		}
+		function aesencrypt() {
+			if ($('#ciphertext').val()=="") {
+			} else {
+				var ciphertext = Aes.Ctr.encrypt($('#ciphertext').val(), $('#password').val(), 256);
+				$('#aescipher').val(ciphertext);
+			}
+		}
+		function aesdecrypt() {
+			if ($('#aescipher').val()=="") {
+			} else {
+				var plain = Aes.Ctr.decrypt($('#aescipher').val(), $('#password').val(), 256);
+				$('#ciphertext').val(plain);
+			}
+		}
+		</script>
 		<!-- jQuery Easing -->
 		<script src="js/jquery.easing.1.3.js"></script>
 		<!-- Bootstrap -->
