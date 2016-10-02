@@ -541,16 +541,37 @@ a .button {
 input[type="radio"], input[type="checkbox"] {
     margin: 0px 0px 0px 10px;
     line-height: normal;
-}
-input[type="checkbox"], input[type="radio"] {
-    box-sizing: border-box;
+	box-sizing: border-box;
     padding: 0;
 }
 
+.wide, textarea {
+  width: 100%;
+  font-size: inherit;
+  text-align: left;
+  overflow-x: hidden;
+}
+textarea+*, .wide+* {
+  margin-top: 0.3em;
+}
 textarea {
     resize: none;
 }
-
+input[type='text'], input[type='password'], textarea {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  font-size: inherit;
+  border: 2px solid #444;
+  padding: 3px;
+  color: black;
+}
+input[type='text']:focus,  input[type='password']:focus, textarea:focus {
+  border-color: red;
+}
+.floatright {
+  float: right;
+  text-align: right;
+}
 .radio-inline, .checkbox-inline {
     position: relative;
     display: inline-block;
@@ -582,11 +603,15 @@ textarea {
 }
 
 .grid_3 {
-  /*display: inline;*/
+	margin: 0 auto;
+	position: relative;
+	width: 260px;
+	
+  /*display: inline;
   float: right;
-  margin-right: 20%;/*margin-left: 10px;*/
-  /*margin-right: 10px;*/
-  width: 220px;
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 220px;*/
 }
 /*
 .grid_9 {
@@ -672,17 +697,18 @@ textarea {
 }
 
 .fmcircle_in span {
-	margin: 0;
+	display: block;
 	padding: 0;
 	border: 0;
 	vertical-align: baseline;
 	width: 172px;
 	background: #fff;
 	color: #666666;
-	padding: 5px 0px 5px 5px;
+	/*padding: 5px 0px 5px 5px;*/
 	margin: 5px 0px 0 55px;/* 65px 0 0 5px; */
 	height: 40px;
 	text-align: center;
+	line-height:40px;  
 	font-weight: bold;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;

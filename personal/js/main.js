@@ -170,7 +170,7 @@
 			var res = State.title.split(" "); 
 			switch(res[2]) {
 				case 'Criptează':
-					res[2] = 'Encrypt';
+					res[2] = 'Encryption';
 					break;
 				case 'Encrypt':
 					res[2] = 'Encryption';
@@ -182,7 +182,7 @@
 					res[2] = 'Settings';
 					break;
 				case 'Decriptează':
-					res[2] = 'Decrypt';
+					res[2] = 'Decryption';
 					break;
 				case 'Despre':
 					res[2] = 'About';

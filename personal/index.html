@@ -59,7 +59,7 @@
 			<div id="fh5co-main">
 				<div class="fh5co-tab-wrap">
 					<ul class="fh5co-tab-menu">
-						<li class="active"><a class="home" href="#" id="Eminote" data-tab="1"><img class="icon icon-eminote" src="images/etransp.png" alt="icon-eminote"/><span class="menu-text lang-en">Eminote</span><span class="menu-text lang-ro">Eminotero</span></a></li>
+						<li class="active"><a class="home" href="#" id="Eminote" data-tab="1"><img class="icon icon-eminote" src="images/etransp.png" alt="icon-eminote"/><span class="menu-text lang-en">Eminote</span><span class="menu-text lang-ro">Eminote</span></a></li>
 						<li><a href="#" id="Settings" data-tab="2"><span class="icon icon-cogs"></span><span class="menu-text lang-en">Settings</span><span class="menu-text lang-ro">Setări</span></a></li>
 						<li><a href="#" id="About" data-tab="3"><span class="icon icon-group"></span><span class="menu-text lang-en">About</span><span class="menu-text lang-ro">Despre</span></a></li>
 						<li><a class="lang" id="Lang" href="#" data-tab="1"><span class="icon icon-language"></span><span class="menu-text" id="target">Română</span><div class="ro" style="display:none"></div></a></li>
@@ -76,7 +76,8 @@
 									<h3 class="border-bottom lang-en">Type a strong password:</h3>
 									<h3 class="border-bottom lang-ro">Introdu o parolă puternică:</h3>
 									<div class="fh5co-text">
-										<input type="password" class="form-control" name="password" id="password" autocomplete="off" tabindex="1"/>
+										<input type="password" style="display:none"/>
+										<input type="password" class="form-control" name="password" id="password" autocomplete="new-password" tabindex="1"/>
 										<p class="explanation lang-en">
 										The password will be used to generate an unique encryption key for each note, based on provided settings. 
 										</p>
@@ -119,7 +120,7 @@
 								</div>
 							</div>
 							<div class="row row-bottom-padded-sm">
-								<div class="alert alert-danger" style="display:none; position:relative; float:top; top:0px; left:0px; z-index:99999;">
+								<div class="alert alert-danger" style="display:none; position:relative; float:top; top:0px; z-index:99999; margin: 15px;}">
 									<button id="close" aria-label="close">&times;</button>
 								  <strong>Warning! </strong><span id="warning"></span>
 								</div>	
@@ -145,7 +146,7 @@
 									<h3 class="border-bottom lang-en">Eminote -  encrypted note:</h3>
 									<h3 class="border-bottom lang-ro">Eminote - nota criptată:</h3>
 									<div class="fh5co-text">									
-										<textarea type="text" class="form-control" id="aescipher" name="aescipher" autocomplete="off" rows="6" tabindex="6"></textarea>
+										<textarea type="text" class="form-control" id="aescipher" name="aescipher" autocomplete="off" autocorrect="off" autocapitalize="off" rows="6" tabindex="6"></textarea>
 										<p class="explanation lang-en">
 										The obtained <b>Eminote</b>, encrypted so that nobody can read it without your password.
 										</p>
@@ -159,7 +160,7 @@
 								<div class="col-md-12">
 									<h3 class="border-bottom">Ciphertext:</h3>
 									<div class="fh5co-text">									
-										<textarea type="text" class="form-control" class="noselect" readonly="readonly" unselectable="on" id="ciphertext" autocomplete="off" rows="5" ></textarea>
+										<textarea type="text" class="form-control" class="noselect" readonly="readonly" unselectable="on" autocorrect="off" autocapitalize="off" id="ciphertext" autocomplete="off" rows="5" ></textarea>
 										<p class="explanation">
 										Intermediate encryption
 										</p>
@@ -171,115 +172,137 @@
 					<!-- Settings -->
 					<div class="fh5co-tab-content" data-content="2">
 						<div class="fh5co-content-inner">
-							<div class="row row-bottom-padded-sm">	
-						<!-- Settings content -->
-						
-								<h2 class="lang-en">Key Derivation</h2>
-								<h2 class="lang-ro">Obținerea Cheii</h2>
-								<div class="section">
-									<div>
-										<label class="lang-en" for="salt">Salt:</label>
-										<label class="lang-ro" for="salt">Valoare arbitrară:</label>
-										<a class="random floatright lang-en" href="javascript:randomize('salt',2,0)">random</a>
-										<a class="random floatright lang-ro" href="javascript:randomize('salt',2,0)">aleatoriu</a>
+							<div class="row row-bottom-padded-sm">
+								<div class="col-md-12">						
+									<!-- Settings content -->
+									<h2 class="lang-en">Key Derivation</h2>
+									<h2 class="lang-ro">Obținerea Cheii</h2>
+									<div class="section">
+										<div>
+											<label class="lang-en" for="salt">Salt:</label>
+											<label class="lang-ro" for="salt">Valoare arbitrară:</label>
+											<a class="random floatright lang-en" href="javascript:randomize('salt',2,0)">random</a>
+											<a class="random floatright lang-ro" href="javascript:randomize('salt',2,0)">aleatoriu</a>
+										</div>
+										<input type="text" id="salt" class="wide hex" autocomplete="off" size="17" maxlength="35"/>
+										<input type="checkbox" name="freshsalt" id="freshsalt" autocomplete="off" checked="checked" style="display:none;"/>
+										<label for="freshsalt" style="display:none;">Use fresh random salt for each new password</label>
+										<p class="explanation lang-en">
+											Salt adds more variability to your key, and prevents attackers
+											from using <a href="http://en.wikipedia.org/wiki/Rainbow_table">rainbow tables</a> to attack it.
+										</p>
+										<p class="explanation lang-ro">
+											Valoarea arbitrară adaugă mai multă variație pentru cheie și previne utilizarea de persoane rău intenționate a <a href="http://en.wikipedia.org/wiki/Rainbow_table">rainbow tables</a> pentru decriptare.
+										</p> 							
 									</div>
-									<input type="text" id="salt" class="wide hex" autocomplete="off" size="17" maxlength="35"/>
-									<input type="checkbox" name="freshsalt" id="freshsalt" autocomplete="off" checked="checked" style="display:none;"/>
-									<label for="freshsalt" style="display:none;">Use fresh random salt for each new password</label>
-									<p class="explanation lang-en">
-										Salt adds more variability to your key, and prevents attackers
-										from using <a href="http://en.wikipedia.org/wiki/Rainbow_table">rainbow tables</a> to attack it.
-									</p>
-									<p class="explanation lang-ro">
-										Valoarea arbitrară adaugă mai multă variație pentru cheie și previne utilizarea de persoane rău intenționate a <a href="http://en.wikipedia.org/wiki/Rainbow_table">rainbow tables</a> pentru decriptare.
-									</p> 							
 								</div>
-								<div class="section">
-									<label class="lang-en" for="iter">Strengthen by a factor of:</label>
-									<label class="lang-ro" for="iter">Factor de întărire:</label>
-									<input type="text" name="iter" id="iter" value="1000" class="numeric" size="5" maxlength="5" autocomplete="off"/>
-									<p class="explanation lang-en">
-										Strengthening makes it slower to compute the key corresponding to your
-										password. This makes it take much longer for an attacker to guess it.
-									</p>
-									<p class="explanation lang-ro">
-										Acest factor adaugă un număr de iterații ceea ce duce la un timp semnificativ mai îndelungat pentru un atacator de a ghici parola dar face mai dificilă calcularea cheii corespunzătoare. 
-									</p>
-								</div>
-								<div class="section">
-									<label class="lang-en">Key size:</label>
-									<label class="lang-ro">Dimensiune cheie:</label>
-									<input type="radio" name="keysize" value="128" id="key128" autocomplete="off" onclick="extendKey(4)"/>
-									<label for="key128">128</label>
-									<input type="radio" name="keysize" value="192" id="key192" autocomplete="off" onclick="extendKey(6)"/>
-									<label for="key192">192</label>
-									<input type="radio" name="keysize" value="256" id="key256" checked="checked" autocomplete="off" onclick="extendKey(8)"/>
-									<label for="key256">256</label> bits 
-									<p class="explanation lang-en">
-										The key is computed from your password, salt and strengthening factor.  It
-										will be used internally by the below selected cipher.
-									</p>
-									<p class="explanation lang-ro">
-										Cheia este calculată din parolă, valoarea arbitrară și factorul de întărire. Va fi folosită intern de cifrul ales mai jos.
-									</p>
-								</div>
-								<!-- cipher key -->
-								<div class="section" style="display:none;">
-									<div>
-										<label for="key">Key:</label>
+							</div>
+							<div class="row row-bottom-padded-sm">
+								<div class="col-md-12">	
+									<div class="section">
+										<label class="lang-en" for="iter">Strengthen by a factor of:</label>
+										<label class="lang-ro" for="iter">Factor de întărire:</label>
+										<input type="text" name="iter" id="iter" value="1000" class="numeric" size="5" maxlength="5" autocomplete="off"/>
+										<p class="explanation lang-en">
+											Strengthening makes it slower to compute the key corresponding to your
+											password. This makes it take much longer for an attacker to guess it.
+										</p>
+										<p class="explanation lang-ro">
+											Acest factor adaugă un număr de iterații ceea ce duce la un timp semnificativ mai îndelungat pentru un atacator de a ghici parola dar face mai dificilă calcularea cheii corespunzătoare. 
+										</p>
 									</div>
-									<textarea class="hex noselect" readonly="readonly" unselectable="on" id="key" name="key" rows="2" autocomplete="off"></textarea>
-									<p class="explanation">
-										This key is computed from your password, salt and strengthening factor.  It
-										will be used internally by the cipher.
-									</p>
 								</div>
-							
-								<h2 class="lang-en">Cipher Parameters</h2>
-								<h2 class="lang-ro">Parameterii Cifru</h2>
-								<div class="section">
-									<label class="lang-en">Cipher mode:</label>
-									<label class="lang-ro">Tipul cifrului:</label>
-									<input type="radio" name="mode" value="ccm" id="ccm" autocomplete="off"/>
-									<label class="lang-en" for="ccm"><acronym title="Counter mode with Cipher block chaining Message authentication code">CCM</acronym></label>
-									<label class="lang-ro" for="ccm"><acronym title="Modul contor cu Cifru bloc de înlănțuire cod de autentificare mesaj">CCM</acronym></label>
-									<input type="radio" name="mode" value="ocb2" id="ocb2" checked="checked" autocomplete="off"/>
-									<label class="lang-en" for="ocb2"><acronym title="Offset CodeBook mode, version 2.0">OCB2</acronym></label>
-									<label class="lang-ro" for="ocb2"><acronym title="Modul de offset codebook, versiunea 2.0">OCB2</acronym></label>
-									<input type="radio" name="mode" value="gcm" id="gcm" autocomplete="off"/>
-									<label class="lang-en" for="gcm"><acronym title="Galois Counter Mode">GCM</acronym></label>
-									<label class="lang-ro" for="gcm"><acronym title="Modul contor Galois">GCM</acronym></label>
-									<p class="explanation lang-en">
-										<a href="http://en.wikipedia.org/wiki/OCB_mode">OCB2 mode</a> (patented) and
-										<a href="http://en.wikipedia.org/wiki/GCM_mode">GCM mode</a> (unencumbered)
-										are slightly faster and have more features than
-										<a href="http://en.wikipedia.org/wiki/CCM_mode">CCM mode</a>.
-									</p>
-									<p class="explanation lang-ro">
-										<a href="http://en.wikipedia.org/wiki/OCB_mode">Modul OCB2</a> (patentat) și
-										<a href="http://en.wikipedia.org/wiki/GCM_mode">modul GCM</a> (negrevat)
-										sunt un pic mai rapide și au mai multe caracteristici decât 
-										<a href="http://en.wikipedia.org/wiki/CCM_mode">modul CCM</a>.
-									</p>
-								</div>
-								<div class="section">
-									<div>
-										<label class="lang-en" for="iv">Initialization vector:</label>
-										<label class="lang-ro" for="iv">Vector initializare:</label>
-										<a class="random floatright lang-en" href="javascript:randomize('iv',4,0)">random</a>
-										<a class="random floatright lang-ro" href="javascript:randomize('iv',4,0)">aleatoriu</a>
+							</div>
+							<div class="row row-bottom-padded-sm">
+								<div class="col-md-12">	
+									<div class="section">
+										<label class="lang-en">Key size:</label>
+										<label class="lang-ro">Dimensiune cheie:</label>
+										<input type="radio" name="keysize" value="128" id="key128" autocomplete="off" onclick="extendKey(4)"/>
+										<label for="key128">128</label>
+										<input type="radio" name="keysize" value="192" id="key192" autocomplete="off" onclick="extendKey(6)"/>
+										<label for="key192">192</label>
+										<input type="radio" name="keysize" value="256" id="key256" checked="checked" autocomplete="off" onclick="extendKey(8)"/>
+										<label for="key256">256</label> bits 
+										<p class="explanation lang-en">
+											The key is computed from your password, salt and strengthening factor.  It
+											will be used internally by the below selected cipher.
+										</p>
+										<p class="explanation lang-ro">
+											Cheia este calculată din parolă, valoarea arbitrară și factorul de întărire. Va fi folosită intern de cifrul ales mai jos.
+										</p>
 									</div>
-									<input type="text" name="iv" id="iv" class="wide hex" size="32" maxlength="35" autocomplete="off"/>
-									<input type="checkbox" id="freshiv" autocomplete="off" checked="checked"  style="display:none;"/>
-									<label for="freshiv"  style="display:none;">Choose a new random IV for every message.</label>
-									<p class="explanation lang-en">
-										The IV adds randomness to your message each time you send it.
-									</p>
-									<p class="explanation lang-ro">
-										Acest vector aleator se adaugă prefixat la mesaj de fiecare dată când îl trimiteți.
-									</p>
 								</div>
-								<div class="section">
+							</div>
+							<div class="row row-bottom-padded-sm">
+								<div class="col-md-12">	
+									<!-- cipher key -->
+									<div class="section" style="display:none;">
+										<div>
+											<label for="key">Key:</label>
+										</div>
+										<textarea class="hex noselect" readonly="readonly" unselectable="on" id="key" name="key" rows="2" autocomplete="off"></textarea>
+										<p class="explanation">
+											This key is computed from your password, salt and strengthening factor.  It
+											will be used internally by the cipher.
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="row row-bottom-padded-sm">
+								<div class="col-md-12">	
+									<h2 class="lang-en">Cipher Parameters</h2>
+									<h2 class="lang-ro">Parameterii Cifru</h2>
+									<div class="section">
+										<label class="lang-en">Cipher mode:</label>
+										<label class="lang-ro">Tipul cifrului:</label>
+										<input type="radio" name="mode" value="ccm" id="ccm" autocomplete="off"/>
+										<label class="lang-en" for="ccm"><acronym title="Counter mode with Cipher block chaining Message authentication code">CCM</acronym></label>
+										<label class="lang-ro" for="ccm"><acronym title="Modul contor cu Cifru bloc de înlănțuire cod de autentificare mesaj">CCM</acronym></label>
+										<input type="radio" name="mode" value="ocb2" id="ocb2" checked="checked" autocomplete="off"/>
+										<label class="lang-en" for="ocb2"><acronym title="Offset CodeBook mode, version 2.0">OCB2</acronym></label>
+										<label class="lang-ro" for="ocb2"><acronym title="Modul de offset codebook, versiunea 2.0">OCB2</acronym></label>
+										<input type="radio" name="mode" value="gcm" id="gcm" autocomplete="off"/>
+										<label class="lang-en" for="gcm"><acronym title="Galois Counter Mode">GCM</acronym></label>
+										<label class="lang-ro" for="gcm"><acronym title="Modul contor Galois">GCM</acronym></label>
+										<p class="explanation lang-en">
+											<a href="http://en.wikipedia.org/wiki/OCB_mode">OCB2 mode</a> (patented) and
+											<a href="http://en.wikipedia.org/wiki/GCM_mode">GCM mode</a> (unencumbered)
+											are slightly faster and have more features than
+											<a href="http://en.wikipedia.org/wiki/CCM_mode">CCM mode</a>.
+										</p>
+										<p class="explanation lang-ro">
+											<a href="http://en.wikipedia.org/wiki/OCB_mode">Modul OCB2</a> (patentat) și
+											<a href="http://en.wikipedia.org/wiki/GCM_mode">modul GCM</a> (negrevat)
+											sunt un pic mai rapide și au mai multe caracteristici decât 
+											<a href="http://en.wikipedia.org/wiki/CCM_mode">modul CCM</a>.
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="row row-bottom-padded-sm">
+								<div class="col-md-12">	
+									<div class="section">
+										<div>
+											<label class="lang-en" for="iv">Initialization vector:</label>
+											<label class="lang-ro" for="iv">Vector initializare:</label>
+											<a class="random floatright lang-en" href="javascript:randomize('iv',4,0)">random</a>
+											<a class="random floatright lang-ro" href="javascript:randomize('iv',4,0)">aleatoriu</a>
+										</div>
+										<input type="text" name="iv" id="iv" class="wide hex" size="32" maxlength="35" autocomplete="off"/>
+										<input type="checkbox" id="freshiv" autocomplete="off" checked="checked"  style="display:none;"/>
+										<label for="freshiv"  style="display:none;">Choose a new random IV for every message.</label>
+										<p class="explanation lang-en">
+											The IV adds randomness to your message each time you send it.
+										</p>
+										<p class="explanation lang-ro">
+											Acest vector aleator se adaugă prefixat la mesaj de fiecare dată când îl trimiteți.
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="row row-bottom-padded-sm">
+								<div class="col-md-12">	
 									<label class="lang-en">Authentication strength:</label>
 									<label class="lang-ro">Puterea de autentificare:</label>
 									<input type="radio" name="tag" value="64" id="tag64" autocomplete="off" checked="checked"/>
@@ -295,15 +318,18 @@
 									<p class="explanation lang-ro">
 										Cu cât este mai lung tag-ul de autentificare, cu atât mai greu este de a modifica mesajul criptat.
 									</p>
-								</div>  
-								<div class="section" style="display:none;">
-									<input type="checkbox" name="json" id="json" autocomplete="off" checked="checked"/>
-									<label for="json">Send the parameters and authenticated data along with the message.</label>
-									<p class="explanation">
-										These parameters are required to decrypt your message later.
-									</p>
 								</div>
-							
+							</div>
+							<div class="row row-bottom-padded-sm">
+								<div class="col-md-12">	
+									<div class="section" style="display:none;">
+										<input type="checkbox" name="json" id="json" autocomplete="off" checked="checked"/>
+										<label for="json">Send the parameters and authenticated data along with the message.</label>
+										<p class="explanation">
+											These parameters are required to decrypt your message later.
+										</p>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
