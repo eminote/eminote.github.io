@@ -14,7 +14,9 @@ function loaded() {
 }
 /* there's probaby a better way to tell the user something, but oh well */
 function error(x) {
-  alert(x);
+  	var div = document.getElementById('warning');
+	div.innerHTML = x;
+	$('.alert').show();
 }
 /* compute PBKDF2 on the password. */
 function doPbkdf2(decrypting) {
@@ -49,12 +51,14 @@ function doPbkdf2(decrypting) {
 function doEncrypt() {
   var v = form.get(), iv = v.iv, password = v.password, key = v.key, adata = v.adata, aes, plaintext=v.plaintext, rp = {}, ct, p;
   
-  if (plaintext === '' && v.ciphertext.length) { return; }
+  if (plaintext === '' && v.ciphertext.length == 0) { 
+  error("There\'s nothing to encrypt!");
+  return; 
+  }
   if (key.length == 0 && password.length == 0) {
-    error("need a password or key!");
+	  error("Need a password!");
     return;
   }
-  
   p = { adata:v.adata,
         iter:v.iter,
         mode:v.mode,

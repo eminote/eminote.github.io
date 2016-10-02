@@ -51,6 +51,35 @@
 				History.pushState({state:1,rand:Math.random()}, 'Eminote - Criptează', '?criptează');
 		}
 	};
+	var subTabClickTrigger = function() {
+		$('.fh5co-subtab-menu a').on('click', function(event) {
+			event.preventDefault();
+			var $this = $(this);
+
+			// add/remove active class
+			$('.fh5co-subtab-menu li').removeClass('active');
+			$this.closest('li').addClass('active');
+			
+			var attribute = $this.attr('id');
+			var mylang = document.getElementsByTagName('html')[0].getAttribute('lang');
+			switch(attribute) {
+			    case 'Encryption':
+					if (mylang =='en'){
+						History.pushState({state:1,rand:Math.random()}, 'Eminote - Encrypt', '?encrypt');
+					} else {
+						History.pushState({state:1,rand:Math.random()}, 'Eminote - Criptează', '?criptează');
+					}
+			        break;
+				case 'Decryption':
+					if (mylang =='en'){
+						History.pushState({state:3,rand:Math.random()}, 'Eminote - Decrypt', '?decrypt');
+					} else {
+						History.pushState({state:3,rand:Math.random()}, 'Eminote - Decriptează', '?decriptează');
+					}
+			        break;
+			};	
+		});
+	};
 	var tabClickTrigger = function() {
 		$('.fh5co-tab-menu a').on('click', function(event) {
 			event.preventDefault();
@@ -70,10 +99,9 @@
 			}, 500);
 
 			var attribute = $this.attr('id');
-			//
 			var mylang = document.getElementsByTagName('html')[0].getAttribute('lang');
 			switch(attribute) {
-			    case 'Encrypt':
+			    case 'Eminote':
 					if (mylang =='en'){
 						History.pushState({state:1,rand:Math.random()}, 'Eminote - Encrypt', '?encrypt');
 					} else {
@@ -82,23 +110,16 @@
 			        break;
 			    case 'Settings':
 					if (mylang=='en'){
-						History.pushState({state:2}, 'Eminote - Settings', '?settings');
+						History.pushState({state:2,rand:Math.random()}, 'Eminote - Settings', '?settings');
 					} else {
-						History.pushState({state:2}, 'Eminote - Setări', '?setări');
-					}
-			        break;
-				case 'Help':
-					if (mylang=='en'){
-						History.pushState({state:3}, 'Eminote - Help', '?help');
-					} else {
-						History.pushState({state:3}, 'Eminote - Ajutor', '?ajutor');
+						History.pushState({state:2,rand:Math.random()}, 'Eminote - Setări', '?setări');
 					}
 			        break;
 				case 'About':
 					if (mylang=='en'){
-						History.pushState({state:4}, 'Eminote - About', '?about');
+						History.pushState({state:4,rand:Math.random()}, 'Eminote - About', '?about');
 					} else {
-						History.pushState({state:4}, 'Eminote - Despre', '?despre');
+						History.pushState({state:4,rand:Math.random()}, 'Eminote - Despre', '?despre');
 					}
 			        break;
 				case 'Lang':
@@ -127,24 +148,41 @@
 					changelang();
 					break;
 			};	
-		})
+		});
+	};
+	var closeAlertClickTrigger = function() {
+		$("#close").on("click", function(event) {
+			event.preventDefault();
+			$(this).closest(".alert").hide();
+		});
 	};
 	// Document on load.
 	$(function(){
 		changelang();
+		closeAlertClickTrigger();
+		tabContainer();
+		tabClickTrigger();  
+		subTabClickTrigger();
 		// Bind to StateChange Event
 		History.Adapter.bind(window, 'statechange', function() { // Note: We are using statechange instead of popstate
 			var State = History.getState(); // Note: We are using History.getState() instead of event.state
-			var res = State.title.split(" ");
+			//For back and forward arrows on browser, title is the only way to know at which page we are.
+			var res = State.title.split(" "); 
 			switch(res[2]) {
 				case 'Criptează':
 					res[2] = 'Encrypt';
 					break;
+				case 'Encrypt':
+					res[2] = 'Encryption';
+					break;
+				case 'Decrypt':
+					res[2] = 'Decryption';
+					break;
 				case 'Setări':
 					res[2] = 'Settings';
 					break;
-				case 'Ajutor':
-					res[2] = 'Help';
+				case 'Decriptează':
+					res[2] = 'Decrypt';
 					break;
 				case 'Despre':
 					res[2] = 'About';
@@ -153,22 +191,28 @@
 					res[2] = 'Encrypt';
 					break;
 			}
-				var $this = $('#' + res[2]);
-				var	data = $this.data('tab');
+				var $this = $('#' + res[2]);	
 				// add/remove active class
-				$('.fh5co-tab-menu li').removeClass('active');
-				$this.closest('li').addClass('active');
-
+				// IF we are in HOME, remove any ACTIVE class and add it to HOME and submenu	
+				if ((res[2]=='Encryption') || (res[2]=='Decryption')) {									
+					$('.fh5co-tab-menu li').removeClass('active');
+					$('.fh5co-subtab-menu li').removeClass('active');
+					$this.closest('li').addClass('active');
+					$('.home').closest('li').addClass('active');
+					var	data = '1';
+				} else { // ELSE remove any ACTIVE class from the main tab menu and add it relevant tab
+					var	data = $this.data('tab');
+					$('.fh5co-tab-menu li').removeClass('active');
+					$this.closest('li').addClass('active');
+				}
+				// some animations to add active class to the relevant content
 				$('.fh5co-tab-content.active').addClass('animated fadeOutDown');
-
 				setTimeout(function(){
 					$('.fh5co-tab-content.active').removeClass('active animated fadeOutDown fadeInUp');
 					$('.fh5co-tab-content[data-content="'+data+'"]').addClass('animated fadeInUp active');
 					getHeight();
 				}, 500);
-		});
-		tabContainer();
-		tabClickTrigger();        
+		});      
 	});
 }());
 

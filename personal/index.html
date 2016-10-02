@@ -4,165 +4,176 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 	<head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Eminote</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Easy-to-use, client-side, cross-browser cryptography for large text" />
-	<meta name="keywords" content="cryptography, encrypt, decrypt, secure, powerful, client-side, easy-to-use, cross-browser" />
-	<meta name="author" content="Emil Nechifor" />
-  	<!-- Facebook and Twitter integration -->
-	<meta property="og:title" content=""/>
-	<meta property="og:image" content=""/>
-	<meta property="og:url" content=""/>
-	<meta property="og:site_name" content=""/>
-	<meta property="og:description" content=""/>
-	<meta name="twitter:title" content="" />
-	<meta name="twitter:image" content="" />
-	<meta name="twitter:url" content="" />
-	<meta name="twitter:card" content="" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Eminote</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Easy-to-use, client-side, cross-browser cryptography for large text" />
+		<meta name="keywords" content="cryptography, encrypt, decrypt, secure, powerful, client-side, easy-to-use, cross-browser" />
+		<meta name="author" content="Emil Nechifor" />
+		<!-- Facebook and Twitter integration -->
+		<meta property="og:title" content=""/>
+		<meta property="og:image" content=""/>
+		<meta property="og:url" content=""/>
+		<meta property="og:site_name" content=""/>
+		<meta property="og:description" content=""/>
+		<meta name="twitter:title" content="" />
+		<meta name="twitter:image" content="" />
+		<meta name="twitter:url" content="" />
+		<meta name="twitter:card" content="" />
 
-	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	<link rel="shortcut icon" href="favicon.ico">
+		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+		<link rel="shortcut icon" href="favicon.ico">
 
-	<!-- <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,300,600,400italic,700' rel='stylesheet' type='text/css'> -->
-	
-	<!-- Animate.css -->
-	<link rel="stylesheet" href="css/animate.css">
-	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="css/icomoon.css">
-	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="css/bootstrap.css">
-	<!-- Theme style  -->
-	<link rel="stylesheet" href="css/style.css">
+		<!-- <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,300,600,400italic,700' rel='stylesheet' type='text/css'> -->
+		
+		<!-- Animate.css -->
+		<link rel="stylesheet" href="css/animate.css">
+		<!-- Icomoon Icon Fonts-->
+		<link rel="stylesheet" href="css/icomoon.css">
+		<!-- Bootstrap  -->
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<!-- Theme style  -->
+		<link rel="stylesheet" href="css/style.css">
 
-	<!-- Modernizr JS -->
-	<script src="js/modernizr-2.6.2.min.js"></script>
-	<!-- FOR IE9 below -->
-	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
-	<![endif]-->
-	<script>if ( typeof window.JSON === 'undefined' ) { document.write('<script src="js/json2.js"><\/script>'); }</script>
-	<!-- jQuery -->
+		<!-- Modernizr JS -->
+		<script src="js/modernizr-2.6.2.min.js"></script>
+		<!-- FOR IE9 below -->
+		<!--[if lt IE 9]>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
+		<script>if ( typeof window.JSON === 'undefined' ) { document.write('<script src="js/json2.js"><\/script>'); }</script>
+		<script type="text/javascript" src="crypto/sjcl.js"></script>
+		<script type="text/javascript" src="crypto/form.js"></script>
+		<script type="text/javascript" src="crypto/eminote.js"></script>
+		<!-- jQuery -->	
 		<script src="js/jquery.min.js"></script>
+		<!--[if lt IE 9]><script type="text/javascript" src="/old-ie/html5shim.js"></script><![endif]-->
+		<!--[if le IE 9]><script type="text/javascript"  src="/old-ie/base64.js"></script><![endif]-->
+		<script type="text/javascript" src="crypto/aes.js"></script>
+		<script type="text/javascript" src="crypto/aes-ctr.js"></script>
 		<script src="js/jquery.history.js"></script>	
-	
 	</head>
 	<body style="background-image: url(images/bg_img.jpg);" onload="loaded()">
-	<form id="theForm" onsubmit="return false;">
-		<div id="fh5co-main">
-			<div class="fh5co-tab-wrap">
-				<ul class="fh5co-tab-menu">
-					<li class="active"><a class="home" href="#" id="Encrypt" data-tab="1"><img class="icon icon-eminote" src="images/etransp.png" alt="" /><span class="menu-text lang-en">Eminote</span><span class="menu-text lang-ro">Eminote</span></a></li>
-					<li><a href="#" id="Settings" data-tab="2"><span class="icon icon-cogs"></span><span class="menu-text lang-en">Settings</span><span class="menu-text lang-ro">Setări</span></a></li>
-					<li><a href="#" id="Help" data-tab="3"><span class="icon icon-life-buoy"></span><span class="menu-text lang-en">Help</span><span class="menu-text lang-ro">Ajutor</span></a></li>
-					<li><a href="#" id="About" data-tab="4"><span class="icon icon-group"></span><span class="menu-text lang-en">About</span><span class="menu-text lang-ro">Despre</span></a></li>
-					<li><a class="lang" id="Lang" href="#" data-tab="1"><span class="icon icon-language"></span><span class="menu-text" id="target">Română</span><div class="ro" style="display:none"></div></a></li>
-				</ul>
-				<div class="fh5co-tab-content active" data-content="1">
-					<div class="fh5co-content-inner text-center">
-						<div class="row row-bottom-padded-sm">
-							<div class="col-md-12 fh5co-counter">
-								<div class="fh5co-number fh5co-left">1</div>
-								<h3 class="border-bottom lang-en">Type a strong password:</h3>
-								<h3 class="border-bottom lang-ro">Introdu o parolă puternică:</h3>
-								<div class="fh5co-text">
-									<input type="password" class="wide form-control" name="password" id="password" autocomplete="off" tabindex="1"/>
-									<p class="explanation lang-en">
-									The password will be used to generate an unique encryption key for each note, based on provided settings. 
-									</p>
-									<p class="explanation lang-ro">
-									Parola va fi folosită pentru a genera o cheie unică de criptare pentru fiecare notă, conform setărilor făcute.
-									</p>
+		<form id="theForm" onsubmit="return false;">
+			<div id="fh5co-main">
+				<div class="fh5co-tab-wrap">
+					<ul class="fh5co-tab-menu">
+						<li class="active"><a class="home" href="#" id="Eminote" data-tab="1"><img class="icon icon-eminote" src="images/etransp.png" alt="icon-eminote"/><span class="menu-text lang-en">Eminote</span><span class="menu-text lang-ro">Eminotero</span></a></li>
+						<li><a href="#" id="Settings" data-tab="2"><span class="icon icon-cogs"></span><span class="menu-text lang-en">Settings</span><span class="menu-text lang-ro">Setări</span></a></li>
+						<li><a href="#" id="About" data-tab="3"><span class="icon icon-group"></span><span class="menu-text lang-en">About</span><span class="menu-text lang-ro">Despre</span></a></li>
+						<li><a class="lang" id="Lang" href="#" data-tab="1"><span class="icon icon-language"></span><span class="menu-text" id="target">Română</span><div class="ro" style="display:none"></div></a></li>
+					</ul>
+					<div class="fh5co-tab-content active" data-content="1">
+						<div class="fh5co-content-inner text-center">
+							<div class="row row-bottom-padded-sm">						
+								<ul class="fh5co-subtab-menu">
+									<li class="active"><a class="encrypt" href="#" id="Encryption"><span class="menu-text lang-en">Encrypt</span><span class="menu-text lang-ro">Criptează</span></a></li>
+									<li><a class="decrypt" href="#" id="Decryption"><span class="menu-text lang-en">Decrypt</span><span class="menu-text lang-ro">Decriptează</span></a></li>
+								</ul>
+								<div class="col-md-12 fh5co-counter">
+									<div class="fh5co-number fh5co-left">1</div>
+									<h3 class="border-bottom lang-en">Type a strong password:</h3>
+									<h3 class="border-bottom lang-ro">Introdu o parolă puternică:</h3>
+									<div class="fh5co-text">
+										<input type="password" class="form-control" name="password" id="password" autocomplete="off" tabindex="1"/>
+										<p class="explanation lang-en">
+										The password will be used to generate an unique encryption key for each note, based on provided settings. 
+										</p>
+										<p class="explanation lang-ro">
+										Parola va fi folosită pentru a genera o cheie unică de criptare pentru fiecare notă, conform setărilor făcute.
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="row row-bottom-padded-sm">
-							<div class="col-md-12 fh5co-counter">
-								<div class="fh5co-number fh5co-left"></div>
-								<h3 class="border-bottom lang-en">Authentification info (optional):</h3>
-								<h3 class="border-bottom lang-ro">Info de autentificare (optional):</h3>
-								<div class="fh5co-text">
-									<textarea id="adata" class="form-control" autocomplete="off" tabindex="2" rows="1" ></textarea>
-									<p class="explanation lang-en">
-									Its integrity will be checked durring decryption so you'll know if someone changed your encrypted note (eg: "The fox has four legs and a tail").
-									</p>
-									<p class="explanation lang-ro">
-									Integritatea sa va fi verificată la decriptare, astfel încât vei ști dacă cineva a modificat nota ta criptată (ex: „Vulpea are patru picioare și o coadă”).
-									</p>
+							<div class="row row-bottom-padded-sm">
+								<div class="col-md-12 fh5co-counter">
+									<div class="fh5co-number fh5co-left"></div>
+									<h3 class="border-bottom lang-en">Authentification info (optional):</h3>
+									<h3 class="border-bottom lang-ro">Info de autentificare (optional):</h3>
+									<div class="fh5co-text">
+										<textarea id="adata" class="form-control" autocomplete="off" tabindex="2" rows="1" ></textarea>
+										<p class="explanation lang-en">
+										Its integrity will be checked durring decryption so you'll know if someone changed your encrypted note (eg: "The fox has four legs and a tail").
+										</p>
+										<p class="explanation lang-ro">
+										Integritatea sa va fi verificată la decriptare, astfel încât vei ști dacă cineva a modificat nota ta criptată (ex: „Vulpea are patru picioare și o coadă”).
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="row row-bottom-padded-sm">
-							<div class="col-md-12 fh5co-counter">
-								<div class="fh5co-number fh5co-left">2</div>
-								<h3 class="border-bottom lang-en">My secret note to encrypt:</h3>
-								<h3 class="border-bottom lang-ro">Nota mea secretă pentru criptare:</h3>
-								<div class="fh5co-text">
-									<textarea type="text" class="form-control" id="plaintext" autocomplete="off" rows="8" tabindex="3"></textarea>
-									<p class="explanation lang-en">
-									Type here the text that you what to encrypt, and than press the below <b>Eminote</b> button.
-									</p>
-									<p class="explanation lang-ro">
-									Tastează aici textul pe care vrei să îl criptezi, apoi apasă butonul <b>Eminote</b> de mai jos.
-									</p>
+							<div class="row row-bottom-padded-sm">
+								<div class="col-md-12 fh5co-counter">
+									<div class="fh5co-number fh5co-left">2</div>
+									<h3 class="border-bottom lang-en">My secret note to encrypt:</h3>
+									<h3 class="border-bottom lang-ro">Nota mea secretă pentru criptare:</h3>
+									<div class="fh5co-text">
+										<textarea type="text" class="form-control" id="plaintext" autocomplete="off" rows="8" tabindex="3"></textarea>
+										<p class="explanation lang-en">
+										Type here the text that you what to encrypt, and than press the below <b>Eminote</b> button.
+										</p>
+										<p class="explanation lang-ro">
+										Tastează aici textul pe care vrei să îl criptezi, apoi apasă butonul <b>Eminote</b> de mai jos.
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="row row-bottom-padded-sm">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="grid_3">
-									<div class="fmcircle_out">
-										<div class="button" role="button" onclick="EncryptIt()" id="encrypt" tabindex="4">
-											<div class="fmcircle_border">
-												<div class="fmcircle_in fmcircle_blue">
-													<span class="lang-en">&#8675; ENCRYPT &#8675;</span>
-													<span class="lang-ro">&#8675; CRIPTEAZĂ &#8675;</span>
-													<img src="images/etransp.png" alt="" />
+							<div class="row row-bottom-padded-sm">
+								<div class="alert alert-danger" style="display:none; position:relative; float:top; top:0px; left:0px; z-index:99999;">
+									<button id="close" aria-label="close">&times;</button>
+								  <strong>Warning! </strong><span id="warning"></span>
+								</div>	
+								<div class="col-md-12">
+									<div class="grid_3">
+										<div class="fmcircle_out">
+											<div class="button" role="button" onclick="EncryptIt()" id="encrypt" tabindex="4">
+												<div class="fmcircle_border">
+													<div class="fmcircle_in fmcircle_blue">
+														<span class="lang-en">&#8675; ENCRYPT &#8675;</span>
+														<span class="lang-ro">&#8675; CRIPTEAZĂ &#8675;</span>
+														<img src="images/etransp.png" alt="" />
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						</div>
-						<div class="row row-bottom-padded-sm">
-							<div class="col-md-12 fh5co-counter">
-								<div class="fh5co-number fh5co-left">3</div>
-								<h3 class="border-bottom lang-en">Eminote -  encrypted note:</h3>
-								<h3 class="border-bottom lang-ro">Eminote - nota criptată:</h3>
-								<div class="fh5co-text">
-									
-									<textarea type="text" class="form-control" id="aescipher" name="aescipher" autocomplete="off" rows="6" tabindex="6"></textarea>
-									<p class="explanation lang-en">
-									The obtained <b>Eminote</b>, encrypted so that nobody can read it without your password.
-									</p>
-									<p class="explanation lang-ro">
-									<b>Eminote</b> rezultată, criptată să nu poată fi citită de nimeni fară a cunoaște parola.
-									</p>
+							<div class="row row-bottom-padded-sm">
+								<div class="col-md-12 fh5co-counter">
+									<div class="fh5co-number fh5co-left">3</div>
+									<h3 class="border-bottom lang-en">Eminote -  encrypted note:</h3>
+									<h3 class="border-bottom lang-ro">Eminote - nota criptată:</h3>
+									<div class="fh5co-text">									
+										<textarea type="text" class="form-control" id="aescipher" name="aescipher" autocomplete="off" rows="6" tabindex="6"></textarea>
+										<p class="explanation lang-en">
+										The obtained <b>Eminote</b>, encrypted so that nobody can read it without your password.
+										</p>
+										<p class="explanation lang-ro">
+										<b>Eminote</b> rezultată, criptată să nu poată fi citită de nimeni fară a cunoaște parola.
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="row row-bottom-padded-sm" style="display:none;">
-							<div class="col-md-12">
-								<h3 class="border-bottom">Ciphertext:</h3>
-								<div class="fh5co-text">									
-									<textarea type="text" class="form-control" class="noselect" readonly="readonly" unselectable="on" id="ciphertext" autocomplete="off" rows="5" ></textarea>
-									<p class="explanation">
-									Intermediate encryption
-									</p>
+							<div class="row row-bottom-padded-sm" style="display:none">
+								<div class="col-md-12">
+									<h3 class="border-bottom">Ciphertext:</h3>
+									<div class="fh5co-text">									
+										<textarea type="text" class="form-control" class="noselect" readonly="readonly" unselectable="on" id="ciphertext" autocomplete="off" rows="5" ></textarea>
+										<p class="explanation">
+										Intermediate encryption
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<!-- Settings -->
-				<div class="fh5co-tab-content" data-content="2">
-					<div class="fh5co-content-inner">
-						<div class="row">
-							<div class="col-md-12">
+					<!-- Settings -->
+					<div class="fh5co-tab-content" data-content="2">
+						<div class="fh5co-content-inner">
+							<div class="row row-bottom-padded-sm">	
+						<!-- Settings content -->
+						
 								<h2 class="lang-en">Key Derivation</h2>
 								<h2 class="lang-ro">Obținerea Cheii</h2>
 								<div class="section">
@@ -172,8 +183,8 @@
 										<a class="random floatright lang-en" href="javascript:randomize('salt',2,0)">random</a>
 										<a class="random floatright lang-ro" href="javascript:randomize('salt',2,0)">aleatoriu</a>
 									</div>
-									<input type="text" class="form-control" id="salt" class="wide hex" autocomplete="off" size="17" maxlength="35"/>
-									<input type="checkbox" class="checkbox-inline" name="freshsalt" id="freshsalt" autocomplete="off" checked="checked" style="display:none;"/>
+									<input type="text" id="salt" class="wide hex" autocomplete="off" size="17" maxlength="35"/>
+									<input type="checkbox" name="freshsalt" id="freshsalt" autocomplete="off" checked="checked" style="display:none;"/>
 									<label for="freshsalt" style="display:none;">Use fresh random salt for each new password</label>
 									<p class="explanation lang-en">
 										Salt adds more variability to your key, and prevents attackers
@@ -183,40 +194,26 @@
 										Valoarea arbitrară adaugă mai multă variație pentru cheie și previne utilizarea de persoane rău intenționate a <a href="http://en.wikipedia.org/wiki/Rainbow_table">rainbow tables</a> pentru decriptare.
 									</p> 							
 								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
-								<div class="col-md-8">
-									<div>
-										<label class="lang-en" for="iter">Strengthen by a factor of:</label>
-										<label class="lang-ro" for="iter">Factor de întărire:</label>
-									</div>
+								<div class="section">
+									<label class="lang-en" for="iter">Strengthen by a factor of:</label>
+									<label class="lang-ro" for="iter">Factor de întărire:</label>
+									<input type="text" name="iter" id="iter" value="1000" class="numeric" size="5" maxlength="5" autocomplete="off"/>
+									<p class="explanation lang-en">
+										Strengthening makes it slower to compute the key corresponding to your
+										password. This makes it take much longer for an attacker to guess it.
+									</p>
+									<p class="explanation lang-ro">
+										Acest factor adaugă un număr de iterații ceea ce duce la un timp semnificativ mai îndelungat pentru un atacator de a ghici parola dar face mai dificilă calcularea cheii corespunzătoare. 
+									</p>
 								</div>
-								<div class="col-md-4">
-									<input type="text" class="form-control" name="iter" id="iter" value="1000" class="numeric" size="5" maxlength="5" autocomplete="off"/>
-								</div>
-							</div>
-							<div class="col-md-12">
-								<p class="explanation lang-en">
-									Strengthening makes it slower to compute the key corresponding to your
-									password. This makes it take much longer for an attacker to guess it.
-								</p>
-								<p class="explanation lang-ro">
-									Acest factor adaugă un număr de iterații ceea ce duce la un timp semnificativ mai îndelungat pentru un atacator de a ghici parola dar face mai dificilă calcularea cheii corespunzătoare. 
-								</p>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
 								<div class="section">
 									<label class="lang-en">Key size:</label>
 									<label class="lang-ro">Dimensiune cheie:</label>
-									<input type="radio" class="radio radio-inline" name="optradio keysize" value="128" id="key128" autocomplete="off" onclick="extendKey(4)"/>
+									<input type="radio" name="keysize" value="128" id="key128" autocomplete="off" onclick="extendKey(4)"/>
 									<label for="key128">128</label>
-									<input type="radio" class="radio radio-inline" name="optradio keysize" value="192" id="key192" autocomplete="off" onclick="extendKey(6)"/>
+									<input type="radio" name="keysize" value="192" id="key192" autocomplete="off" onclick="extendKey(6)"/>
 									<label for="key192">192</label>
-									<input type="radio" class="radio radio-inline" name="optradio keysize" value="256" id="key256" checked="checked" autocomplete="off" onclick="extendKey(8)"/>
+									<input type="radio" name="keysize" value="256" id="key256" checked="checked" autocomplete="off" onclick="extendKey(8)"/>
 									<label for="key256">256</label> bits 
 									<p class="explanation lang-en">
 										The key is computed from your password, salt and strengthening factor.  It
@@ -226,37 +223,30 @@
 										Cheia este calculată din parolă, valoarea arbitrară și factorul de întărire. Va fi folosită intern de cifrul ales mai jos.
 									</p>
 								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
 								<!-- cipher key -->
 								<div class="section" style="display:none;">
 									<div>
 										<label for="key">Key:</label>
 									</div>
-									<textarea class="hex noselect form-control" readonly="readonly" unselectable="on" id="key" name="key" rows="2" autocomplete="off"></textarea>
+									<textarea class="hex noselect" readonly="readonly" unselectable="on" id="key" name="key" rows="2" autocomplete="off"></textarea>
 									<p class="explanation">
 										This key is computed from your password, salt and strengthening factor.  It
 										will be used internally by the cipher.
 									</p>
 								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
+							
 								<h2 class="lang-en">Cipher Parameters</h2>
 								<h2 class="lang-ro">Parameterii Cifru</h2>
 								<div class="section">
 									<label class="lang-en">Cipher mode:</label>
 									<label class="lang-ro">Tipul cifrului:</label>
-									<input type="radio" class="radio radio-inline" name="mode" value="ccm" id="ccm" autocomplete="off"/>
+									<input type="radio" name="mode" value="ccm" id="ccm" autocomplete="off"/>
 									<label class="lang-en" for="ccm"><acronym title="Counter mode with Cipher block chaining Message authentication code">CCM</acronym></label>
 									<label class="lang-ro" for="ccm"><acronym title="Modul contor cu Cifru bloc de înlănțuire cod de autentificare mesaj">CCM</acronym></label>
-									<input type="radio" class="radio radio-inline" name="mode" value="ocb2" id="ocb2" checked="checked" autocomplete="off"/>
+									<input type="radio" name="mode" value="ocb2" id="ocb2" checked="checked" autocomplete="off"/>
 									<label class="lang-en" for="ocb2"><acronym title="Offset CodeBook mode, version 2.0">OCB2</acronym></label>
 									<label class="lang-ro" for="ocb2"><acronym title="Modul de offset codebook, versiunea 2.0">OCB2</acronym></label>
-									<input type="radio" class="radio radio-inline" name="mode" value="gcm" id="gcm" autocomplete="off"/>
+									<input type="radio" name="mode" value="gcm" id="gcm" autocomplete="off"/>
 									<label class="lang-en" for="gcm"><acronym title="Galois Counter Mode">GCM</acronym></label>
 									<label class="lang-ro" for="gcm"><acronym title="Modul contor Galois">GCM</acronym></label>
 									<p class="explanation lang-en">
@@ -272,10 +262,6 @@
 										<a href="http://en.wikipedia.org/wiki/CCM_mode">modul CCM</a>.
 									</p>
 								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
 								<div class="section">
 									<div>
 										<label class="lang-en" for="iv">Initialization vector:</label>
@@ -283,9 +269,9 @@
 										<a class="random floatright lang-en" href="javascript:randomize('iv',4,0)">random</a>
 										<a class="random floatright lang-ro" href="javascript:randomize('iv',4,0)">aleatoriu</a>
 									</div>
-									<input type="text" class="form-control" name="iv" id="iv" class="wide hex" size="32" maxlength="35" autocomplete="off"/>
-									<input type="checkbox" class="checkbox-inline" id="freshiv" autocomplete="off" checked="checked"  style="display:none;"/>
-									<label for="freshiv" style="display:none;">Choose a new random IV for every message.</label>
+									<input type="text" name="iv" id="iv" class="wide hex" size="32" maxlength="35" autocomplete="off"/>
+									<input type="checkbox" id="freshiv" autocomplete="off" checked="checked"  style="display:none;"/>
+									<label for="freshiv"  style="display:none;">Choose a new random IV for every message.</label>
 									<p class="explanation lang-en">
 										The IV adds randomness to your message each time you send it.
 									</p>
@@ -293,18 +279,14 @@
 										Acest vector aleator se adaugă prefixat la mesaj de fiecare dată când îl trimiteți.
 									</p>
 								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
 								<div class="section">
 									<label class="lang-en">Authentication strength:</label>
 									<label class="lang-ro">Puterea de autentificare:</label>
-									<input type="radio" class="radio radio-inline" name="tag" value="64" id="tag64" autocomplete="off" checked="checked"/>
+									<input type="radio" name="tag" value="64" id="tag64" autocomplete="off" checked="checked"/>
 									<label for="tag64">64</label>
-									<input type="radio" class="radio radio-inline" name="tag" value="96" id="tag96" autocomplete="off"/>
+									<input type="radio" name="tag" value="96" id="tag96" autocomplete="off"/>
 									<label for="tag96">96</label>
-									<input type="radio" class="radio radio-inline" name="tag" value="128" id="tag128" checked="checked" autocomplete="off"/>
+									<input type="radio" name="tag" value="128" id="tag128" checked="checked" autocomplete="off"/>
 									<label for="tag128">128</label> bits 
 									<p class="explanation lang-en">
 										The longer the authentication tag, the harder it is
@@ -313,79 +295,52 @@
 									<p class="explanation lang-ro">
 										Cu cât este mai lung tag-ul de autentificare, cu atât mai greu este de a modifica mesajul criptat.
 									</p>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">						
+								</div>  
 								<div class="section" style="display:none;">
-									<input type="checkbox" class="checkbox-inline" name="json" id="json" autocomplete="off" checked="checked"/>
+									<input type="checkbox" name="json" id="json" autocomplete="off" checked="checked"/>
 									<label for="json">Send the parameters and authenticated data along with the message.</label>
 									<p class="explanation">
 										These parameters are required to decrypt your message later.
 									</p>
 								</div>
+							
+							</div>
+						</div>
+					</div>
+					<div class="fh5co-tab-content" data-content="3">
+						<div class="fh5co-content-inner">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="fh5co-text">
+									<p>EMINOTE is a secure, powerful, easy-to-use, cross-browser cryptography for large text in Javascript. It's an open source project, with code hosted <a href="https://eminote.github.io">here</a> on GitHub. Why Javascript? The ideea is not to have sensitive information available in some form on a server.</p>
+									<p>EMINOTE is secure. It uses the industry-standard AES algorithm at 128, 192 or 256 bits; the SHA256 hash function; the HMAC authentication code; the PBKDF2 password strengthener; and the CCM, OCB2 or GCM authenticated-encryption modes. Just as importantly, the default parameters are sensible (you can change any of this in settings, by the way): EMINOTE strengthens your passwords by a default factor of 1000 and salts them to protect against rainbow tables, and it authenticates every message it sends to prevent it from being modified. EMINOTE provides the best security which is practically available in Javascript.</p>
+									<p>EMINOTE is cross-browser. It was tested on all modern browsers (including various versions of Internet Explorer, Chrome, Firefox, Safari and Opera on Mac, Linux and Windows). If you find any failures, please report an issue on the below contact form.</p> 
+									<p>Because the site is static (it saves nothing on the server) and a normal form would need some kind of database. For support Eminote uses Zoho as an external portal. You should add an issue or question <a href="https://support.zoho.com/portal/eminote/newticket">here</a>.</p>
+									</div>	
+								</div>	
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="fh5co-tab-content" data-content="3">
-					<div class="fh5co-content-inner">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="fh5co-text">
-								<p>EMINOTE (source code hosted <a href="https://eminote.github.io">here</a> on GitHub) is a project to build a secure, powerful, easy-to-use, cross-browser cryptography for large text in Javascript. Why Javascript? The ideea is not to have sensitive information available in some form on a server.</p>
-								<p>EMINOTE is secure. It uses the industry-standard AES algorithm at 128, 192 or 256 bits; the SHA256 hash function; the HMAC authentication code; the PBKDF2 password strengthener; and the CCM, OCB2 or GCM authenticated-encryption modes. Just as importantly, the default parameters are sensible (you can change any of this in settings, by the way): EMINOTE strengthens your passwords by a default factor of 1000 and salts them to protect against rainbow tables, and it authenticates every message it sends to prevent it from being modified. EMINOTE provides the best security which is practically available in Javascript.</p>
-								<p>EMINOTE is cross-browser. It was tested on all modern browsers (including various versions of Internet Explorer, Chrome, Firefox, Safari and Opera on Mac, Linux and Windows). If you find any failures, please report an issue on the below contact form.</p> 
-								<p>Because the site is static (it saves nothing on the server) and a normal form would need some kind of database. For support Eminote uses Zoho as an external portal. You add an issue or question <a href="https://support.zoho.com/portal/eminote/newticket">here</a>.</p>
-								</div>	
-							</div>	
+				<footer id="fh5co-footer">
+					<div class="logo">
+							<img src="images/eblack.png" alt="logo" />
+							<h1>minote</h1>
+						</div>
+					<div class="row" id="social-icons-footer">
+						<div class="text-center">
+							<ul class="fh5co-social">
+								<li><a href="support@eminote.zohosupport.com"><i class="icon-envelope"></i></a></li>
+								<li><a href="#"><i class="icon-twitter"></i></a></li>
+								<li><a href="#"><i class="icon-instagram"></i></a></li>
+								<li><a href="#"><i class="icon-google"></i></a></li>
+								<li><a href="#"><i class="icon-linkedin"></i></a></li>
+							</ul>
 						</div>
 					</div>
-				</div>
-				<div class="fh5co-tab-content" data-content="4">
-					<div class="fh5co-content-inner">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="fh5co-text">
-								<p>EMINOTE (source code hosted <a href="https://eminote.github.io">here</a> on GitHub) is a project to build a secure, powerful, fast, small, easy-to-use, cross-browser cryptography for large text in Javascript. Why Javascript? The ideea is not to have sensitive information available unencrypted on Internet.</p>
-								<p>EMINOTE is secure. It uses the industry-standard AES algorithm at 128, 192 or 256 bits, the SHA256 hash function, the HMAC authentication code, the PBKDF2 password strengthener, and the CCM, OCB2 or GCM authenticated-encryption modes. Just as importantly, the default parameters are sensible (you can change any of this in settings, by the way). EMINOTE strengthens your passwords by a default factor of 1000 and salts them to protect against rainbow tables, and it authenticates every message it sends to prevent it from being modified. EMINOTE provides the best security which is practically available in Javascript.</p>
-								<p>EMINOTE is cross-browser. It was tested on all modern browsers (including various versions of Internet Explorer, Chrome, Firefox, Safari and Opera on Mac, Linux and Windows). If you find any failures, please report an issue on the below contact form.</p> 
-								<p>Because the site is static (it saves nothing on the server) and a normal form would need some kind of database. For support, EMINOTE uses Zoho as an external portal. You may add an issue or question <a href="https://support.zoho.com/portal/eminote/newticket">here</a>.</p>
-								</div>	
-							</div>	
-						</div>
-					</div>
-				</div>
+				</footer>
 			</div>
-			<footer id="fh5co-footer">
-				<div class="logo">
-						<img src="images/eblack.png" alt="logo" />
-						<h1>minote</h1>
-					</div>
-				<div class="row" id="social-icons-footer">
-					<div class="text-center">
-						<ul class="fh5co-social">
-							<li><a href="support@eminote.zohosupport.com"><i class="icon-envelope"></i></a></li>
-							<li><a href="#"><i class="icon-twitter"></i></a></li>
-							<li><a href="#"><i class="icon-instagram"></i></a></li>
-							<li><a href="#"><i class="icon-google"></i></a></li>
-							<li><a href="#"><i class="icon-linkedin"></i></a></li>
-						</ul>
-					</div>
-				</div>
-			</footer>
-		</div>
 		</form>
-		
-					<script type="text/javascript" src="crypto/sjcl.js"></script>
-		<script type="text/javascript" src="crypto/form.js"></script>
-		<script type="text/javascript" src="crypto/eminote.js"></script>
-
-			<!--[if lt IE 9]><script type="text/javascript" src="/old-ie/html5shim.js"></script><![endif]-->
-		<!--[if le IE 9]><script type="text/javascript"  src="/old-ie/base64.js"></script><![endif]-->
-		<script type="text/javascript" src="crypto/aes.js"></script>
-		<script type="text/javascript" src="crypto/aes-ctr.js"></script>
 		
 		<script>
 		'use strict';
